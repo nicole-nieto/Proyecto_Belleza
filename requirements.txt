@@ -5,7 +5,7 @@ sqlmodel==0.0.22
 sqlalchemy==2.0.36
 pydantic==2.9.2
 pydantic-settings==2.5.2
-python-dotenv==1.0.1
+python-dotenv
 
 # --- Seguridad y autenticación (si usas login/register) ---
 passlib[bcrypt]==1.7.4
