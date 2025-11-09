@@ -9,6 +9,7 @@ app = FastAPI(title="Proyecto Belleza - API")
 def on_startup():
     create_db_and_tables()
 
+
 # Incluir rutas
 app.include_router(spa_router.router)
 app.include_router(servicio_router.router)
