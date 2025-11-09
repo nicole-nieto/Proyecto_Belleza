@@ -129,3 +129,25 @@ def eliminar_spa(
     session.add(spa)
     session.commit()
     return {"message": f"Spa '{spa.nombre}' fue desactivado correctamente."}
+
+
+# -------------------- BUSCAR SPA POR NOMBRE O ZONA --------------------
+@router.get("/buscar/", response_model=list[SpaRead])
+def buscar_spa(
+    nombre: str | None = None,
+    zona: str | None = None,
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(get_current_user),
+):
+    
+    query = select(Spa).where(Spa.activo == True)
+
+    if nombre:
+        query = query.where(Spa.nombre.contains(nombre))
+    if zona:
+        query = query.where(Spa.zona.contains(zona))
+
+    spas = session.exec(query).all()
+    if not spas:
+        raise HTTPException(status_code=404, detail="No se encontraron spas con esos criterios.")
+    return spas

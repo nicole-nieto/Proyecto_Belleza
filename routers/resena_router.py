@@ -20,7 +20,7 @@ def crear_resena(
     - El Spa debe existir y estar activo.
     - La calificación debe estar entre 1 y 5.
     """
-    if current_user.rol != "cliente":
+    if current_user.rol != "usuario":
         raise HTTPException(status_code=403, detail="Solo los clientes pueden crear reseñas")
 
     spa = session.get(Spa, resena_data.spa_id)
