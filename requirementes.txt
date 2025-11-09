@@ -22,3 +22,4 @@ httpx==0.27.2
 
 # --- Otras utilidades ---
 python-multipart==0.0.9   # necesario si subes imágenes o archivos
+psycopg2-binary
