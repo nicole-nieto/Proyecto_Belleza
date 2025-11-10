@@ -1,4 +1,3 @@
-# --- Dependencias principales del proyecto FastAPI ---
 fastapi==0.115.0
 uvicorn==0.30.6
 sqlmodel==0.0.22
@@ -6,20 +5,9 @@ sqlalchemy==2.0.36
 pydantic==2.9.2
 pydantic-settings==2.5.2
 python-dotenv
-
-# --- Seguridad y autenticación (si usas login/register) ---
 passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
 python-jose[cryptography]==3.3.0
 email-validator==2.2.0
-
-# --- Base de datos y utilidades ---
-alembic==1.13.2
-sqlite-web==0.6.4  # opcional, para explorar la BD desde el navegador
-
-# --- Testing (opcional, si usas pytest) ---
-pytest==8.3.3
-httpx==0.27.2
-
-# --- Otras utilidades ---
-python-multipart==0.0.9   # necesario si subes imágenes o archivos
-psycopg2-binary
+psycopg[binary]
+python-multipart==0.0.9

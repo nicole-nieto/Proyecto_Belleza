@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
-from fastapi import Depends, HTTPException, status, Header
+from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlmodel import Session, select
@@ -11,7 +11,7 @@ from fastapi.security import OAuth2PasswordBearer
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 # ---------------- CONFIGURACIÓN GENERAL ----------------
-SECRET_KEY = "super_clave_secreta_nicole_2025"  # ⚠️ cámbiala por algo más seguro
+SECRET_KEY = "super_clave_secreta_nicole_2025"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 horas
 
@@ -19,12 +19,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # ---------------- UTILIDADES ----------------
 def hash_password(password: str):
-    """Encripta una contraseña usando bcrypt."""
-    return pwd_context.hash(password)
+    """Encripta una contraseña usando bcrypt (truncando a 72 bytes)."""
+    password_bytes = password.encode("utf-8")[:72]  # truncar a 72 bytes
+    return pwd_context.hash(password_bytes)
 
 def verify_password(password: str, hashed_password: str):
-    """Verifica que la contraseña ingresada coincida con la guardada."""
-    return pwd_context.verify(password, hashed_password)
+    """Verifica que la contraseña ingresada coincida con la guardada (truncando a 72 bytes)."""
+    password_bytes = password.encode("utf-8")[:72]
+    return pwd_context.verify(password_bytes, hashed_password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Crea un token JWT con expiración."""
@@ -59,7 +61,6 @@ def get_current_user(
 
     return user
 
-
 # ---------------- LOGIN ----------------
 def login_user(correo: str, contrasena: str, session: Session):
     """Autentica al usuario y genera un token JWT."""
@@ -81,7 +82,6 @@ def login_user(correo: str, contrasena: str, session: Session):
 
 # ---------------- DEPENDENCIAS DE AUTORIZACIÓN ----------------
 def admin_principal_required(current_user=Depends(get_current_user)):
-    """Solo el administrador principal puede ejecutar esta acción."""
     if current_user.rol != "admin_principal":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -90,7 +90,6 @@ def admin_principal_required(current_user=Depends(get_current_user)):
     return current_user
 
 def admin_spa_required(current_user=Depends(get_current_user)):
-    """Solo los administradores de spa (y el principal) pueden ejecutar esta acción."""
     if current_user.rol not in ["admin_principal", "admin_spa"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -99,7 +98,6 @@ def admin_spa_required(current_user=Depends(get_current_user)):
     return current_user
 
 def usuario_required(current_user=Depends(get_current_user)):
-    """Solo los usuarios normales pueden ejecutar esta acción."""
     if current_user.rol != "usuario":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

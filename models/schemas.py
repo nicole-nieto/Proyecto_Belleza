@@ -1,3 +1,4 @@
+# schemas.py
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import date
@@ -8,7 +9,7 @@ class UsuarioBase(BaseModel):
     correo: EmailStr
     rol: Optional[str] = "cliente"
 
-class UsuarioCreate(BaseModel):  # 👈 sin heredar de UsuarioBase
+class UsuarioCreate(BaseModel):
     nombre: str
     correo: EmailStr
     contrasena: str
@@ -23,6 +24,7 @@ class UsuarioRead(BaseModel):
 
     class Config:
         from_attributes = True
+
 # ---------- SPA ----------
 class SpaCreate(BaseModel):
     nombre: str
@@ -37,8 +39,9 @@ class SpaRead(BaseModel):
     zona: str
     horario: str
     calificacion_promedio: float
+
     class Config:
-        from_attributes = True # <-- Cámbialo por esto
+        from_attributes = True
 
 # ---------- SERVICIO ----------
 class ServicioCreate(BaseModel):
@@ -55,7 +58,7 @@ class ServicioRead(BaseModel):
     precio_ref: Optional[float] = None
 
     class Config:
-        from_attributes = True  # o orm_mode = True si estás en Pydantic 1
+        from_attributes = True
 
 # ---------- MATERIAL ----------
 class MaterialCreate(BaseModel):
@@ -66,6 +69,7 @@ class MaterialRead(BaseModel):
     id: int
     nombre: str
     tipo: str
+
     class Config:
         from_attributes = True
 
@@ -73,7 +77,7 @@ class MaterialRead(BaseModel):
 class ResenaCreate(BaseModel):
     calificacion: int
     comentario: str
-    fecha: date
+    fecha_creacion: date
     spa_id: int
     usuario_id: int
 
@@ -81,7 +85,7 @@ class ResenaRead(BaseModel):
     id: int
     calificacion: int
     comentario: str
-    fecha_creacion: date   # 👈 Debe coincidir con tu modelo de BD
+    fecha_creacion: date
     spa_id: int
     usuario_id: int
 
