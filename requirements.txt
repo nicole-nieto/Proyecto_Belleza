@@ -12,3 +12,4 @@ email-validator==2.2.0
 psycopg[binary]
 python-multipart==0.0.9
 psycopg2-binary
+jinja2
