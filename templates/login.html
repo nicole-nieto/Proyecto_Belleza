@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Ingresar{% endblock %}
+{% block content %}
+  <div class="card auth-card">
+    <h2>Iniciar sesión</h2>
+    <form id="login-form">
+      <label>Correo</label>
+      <input type="email" id="email" required />
+      <label>Contraseña</label>
+      <input type="password" id="password" required />
+      <button type="submit">Ingresar</button>
+    </form>
+    <div id="login-msg" class="muted"></div>
+  </div>
+{% endblock %}

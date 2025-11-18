@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+  <section class="hero">
+    <h2>Bienvenido a Beauty Nails</h2>
+    <p>Encuentra los mejores spas de uñas en Fontibón.</p>
+
+    <div class="search-row">
+      <input id="search-nombre" placeholder="Buscar por nombre..." />
+      <input id="search-zona" placeholder="Buscar por zona..." />
+      <button id="btn-buscar-spa">Buscar</button>
+    </div>
+
+    <div id="spas-list" class="grid"></div>
+  </section>
+{% endblock %}

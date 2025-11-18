@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Materiales{% endblock %}
+{% block content %}
+  <h2>Materiales</h2>
+  <div class="actions">
+    <button id="btn-refresh-materiales">Refrescar</button>
+    <button id="btn-new-material">Crear Material</button>
+  </div>
+  <div id="materiales-list" class="grid"></div>
+
+  <div id="material-form-panel" class="panel hidden">
+    <h3>Crear Material</h3>
+    <form id="material-form">
+      <input id="m-nombre" placeholder="Nombre" required />
+      <input id="m-tipo" placeholder="Tipo" required />
+      <button type="submit">Crear</button>
+      <button type="button" id="m-cancel">Cancelar</button>
+    </form>
+  </div>
+{% endblock %}

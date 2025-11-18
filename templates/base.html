@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Beauty Nails - {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="/"><h1>Beauty Nails</h1></a>
+        <p class="tag">Spa - Fontibón</p>
+      </div>
+      <nav>
+        <a href="/spas">Spas</a>
+        <a href="/servicios">Servicios</a>
+        <a href="/materiales">Materiales</a>
+        <a href="/resenas">Reseñas</a>
+        <a href="/reportes">Reportes</a>
+        <a href="/routers/usuario_router.py">Usuarios</a>
+        <a id="nav-login" href="/login">Iniciar sesión</a>
+        <button id="btn-logout" class="hidden">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Beauty Nails - Fontibón</p>
+    </div>
+  </footer>
+
+  <script>
+  </script>
+  <script src="/static/js/app.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

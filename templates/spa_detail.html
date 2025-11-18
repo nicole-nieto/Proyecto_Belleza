@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Spa{% endblock %}
+{% block content %}
+  <div id="spa-detail">
+    <h2 id="spa-name">Cargando...</h2>
+    <p id="spa-direction"></p>
+    <p id="spa-zone"></p>
+    <p id="spa-horario"></p>
+    <h3>Materiales</h3>
+    <ul id="spa-materiales"></ul>
+    <h3>Reseñas</h3>
+    <div id="spa-resenas"></div>
+
+    <div id="resena-form" class="card">
+      <h4>Agregar reseña</h4>
+      <label>Calificación (1-5)</label>
+      <input id="resena-calificacion" type="number" min="1" max="5" />
+      <label>Comentario</label>
+      <textarea id="resena-comentario"></textarea>
+      <button id="btn-enviar-resena">Enviar reseña</button>
+    </div>
+  </div>
+{% endblock %}

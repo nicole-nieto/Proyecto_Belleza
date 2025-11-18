@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Spas{% endblock %}
+{% block content %}
+  <h2>Spas</h2>
+  <div class="actions">
+    <button id="btn-refresh-spas">Refrescar</button>
+    <button id="btn-new-spa">Crear Spa (admin)</button>
+  </div>
+
+  <div id="spas-list" class="grid"></div>
+
+  <!-- Modal / panel simple para crear/editar -->
+  <div id="spa-form-panel" class="panel hidden">
+    <h3 id="spa-form-title">Crear Spa</h3>
+    <form id="spa-form">
+      <input type="text" id="spa-nombre" placeholder="Nombre" required />
+      <input type="text" id="spa-direccion" placeholder="Dirección" required />
+      <input type="text" id="spa-zona" placeholder="Zona" required />
+      <input type="text" id="spa-horario" placeholder="Horario" required />
+      <button type="submit">Guardar</button>
+      <button type="button" id="spa-cancel">Cancelar</button>
+    </form>
+  </div>
+
+{% endblock %}
