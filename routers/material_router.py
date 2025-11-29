@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from core.db import get_session
 from models.models import Material, Spa, SpaMaterial, Usuario
-from models.schemas import MaterialCreate, MaterialRead
+from models.schemas import MaterialCreate, MaterialRead, MaterialUpdate
 from core.auth import get_current_user
 
 router = APIRouter(prefix="/materiales", tags=["Materiales"])
@@ -130,7 +130,7 @@ def listar_materiales_por_spa(
 @router.patch("/{material_id}", response_model=MaterialRead)
 def actualizar_material(
     material_id: int,
-    data: MaterialCreate,
+    data: MaterialUpdate,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):

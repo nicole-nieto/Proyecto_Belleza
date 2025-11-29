@@ -87,3 +87,9 @@ class Resena(SQLModel, table=True):
 
     spa: Optional[Spa] = Relationship(back_populates="resenas")
     usuario: Optional[Usuario] = Relationship(back_populates="resenas")
+
+class SpaUpdate(SQLModel):
+    nombre: str | None = None
+    direccion: str | None = None
+    zona: str | None = None
+    horario: str | None = None

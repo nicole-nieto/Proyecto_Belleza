@@ -1,25 +1,55 @@
 {% extends "base.html" %}
 {% block title %}Spas{% endblock %}
+
 {% block content %}
-  <h2>Spas</h2>
-  <div class="actions">
-    <button id="btn-refresh-spas">Refrescar</button>
-    <button id="btn-new-spa">Crear Spa (admin)</button>
-  </div>
+<div class="p-4">
 
-  <div id="spas-list" class="grid"></div>
+    <div class="flex justify-between mb-4 gap-4">
 
-  <!-- Modal / panel simple para crear/editar -->
-  <div id="spa-form-panel" class="panel hidden">
-    <h3 id="spa-form-title">Crear Spa</h3>
-    <form id="spa-form">
-      <input type="text" id="spa-nombre" placeholder="Nombre" required />
-      <input type="text" id="spa-direccion" placeholder="Dirección" required />
-      <input type="text" id="spa-zona" placeholder="Zona" required />
-      <input type="text" id="spa-horario" placeholder="Horario" required />
-      <button type="submit">Guardar</button>
-      <button type="button" id="spa-cancel">Cancelar</button>
-    </form>
-  </div>
+        <div class="flex gap-2 w-2/3">
+            <input id="inputBuscar" type="text" placeholder="Buscar por nombre"
+                   class="border p-2 w-full" oninput="buscarSpas()">
 
+            <input id="inputZona" type="text" placeholder="Zona"
+                   class="border p-2 w-full" oninput="buscarSpas()">
+        </div>
+
+        <div id="adminActions" class="flex justify-end items-center w-1/3">
+            <button id="btnCrearSpa"
+                    class="hidden bg-green-600 text-white px-3 py-1 rounded"
+                    onclick="abrirCrearSpa()">
+                Crear Spa
+            </button>
+        </div>
+    </div>
+
+    <div id="spaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+</div>
+
+
+<!-- MODAL CREAR / EDITAR SPA -->
+<div id="modalSpa" class="hidden fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+    <div class="bg-white p-6 rounded w-96 shadow-lg">
+        
+        <h2 id="modalTitulo" class="text-xl font-bold mb-3">Crear Spa</h2>
+
+        <input id="spaNombre" class="border p-2 w-full mb-2" placeholder="Nombre">
+        <input id="spaDireccion" class="border p-2 w-full mb-2" placeholder="Dirección">
+        <input id="spaZona" class="border p-2 w-full mb-2" placeholder="Zona">
+        <input id="spaHorario" class="border p-2 w-full mb-2" placeholder="Horario">
+
+        <div class="flex justify-end gap-2 mt-4">
+            <button onclick="cerrarModal()" class="px-3 py-1 bg-gray-600 text-white rounded">Cancelar</button>
+            <button onclick="guardarSpa()" class="px-3 py-1 bg-blue-600 text-white rounded">Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="/static/js/config.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/spas.js"></script>
 {% endblock %}
+

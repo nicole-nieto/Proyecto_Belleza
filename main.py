@@ -1,9 +1,9 @@
 from core.db import create_db_and_tables
-from routers import spa_router, servicio_router, material_router, usuario_router, resena_router, auth_router, reporte_router
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
 from routers.auth_router import router as auth_router
 from routers.spa_router import router as spa_router
@@ -15,13 +15,25 @@ from routers.resena_router import router as resena_router
 
 app = FastAPI()
 
-# === CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS ===
+# CORS CORRECTO
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# STATIC
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# === CONFIGURACIÓN DE TEMPLATES (HTML) ===
+# TEMPLATES
 templates = Jinja2Templates(directory="templates")
 
-# === RUTAS DE TUS MÓDULOS (BACKEND) ===
+# ROUTERS
 app.include_router(auth_router)
 app.include_router(spa_router)
 app.include_router(servicio_router)
@@ -30,10 +42,12 @@ app.include_router(usuario_router)
 app.include_router(reporte_router)
 app.include_router(resena_router)
 
-# ==============================
-#    PÁGINAS DEL FRONTEND
-# ==============================
+# startup
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
+# PÁGINAS FRONTEND
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})

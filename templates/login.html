@@ -1,15 +1,63 @@
 {% extends "base.html" %}
-{% block title %}Ingresar{% endblock %}
+{% block title %}Login{% endblock %}
+
 {% block content %}
-  <div class="card auth-card">
-    <h2>Iniciar sesión</h2>
-    <form id="login-form">
-      <label>Correo</label>
-      <input type="email" id="email" required />
-      <label>Contraseña</label>
-      <input type="password" id="password" required />
-      <button type="submit">Ingresar</button>
-    </form>
-    <div id="login-msg" class="muted"></div>
+<section class="auth-wrap">
+  <div class="auth-card">
+
+    <!-- LOGIN FORM -->
+    <div id="login-box">
+      <h2>Iniciar sesión</h2>
+
+      <form id="login-form" class="form">
+        <label>Correo</label>
+        <input id="email" type="email" required />
+
+        <label>Contraseña</label>
+        <input id="password" type="password" required />
+
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <p id="login-msg" class="form-msg"></p>
+
+      <p class="switch-text">
+        ¿No tienes cuenta?
+        <a id="to-register" href="#">Regístrate aquí</a>
+      </p>
+    </div>
+
+
+    <!-- REGISTER FORM -->
+    <div id="register-box" class="hidden">
+      <h2>Crear cuenta</h2>
+
+      <form id="register-form" class="form">
+        <label>Nombre</label>
+        <input id="reg-nombre" type="text" required />
+
+        <label>Correo</label>
+        <input id="reg-correo" type="email" required />
+
+        <label>Contraseña</label>
+        <input id="reg-password" type="password" required />
+
+        <button type="submit" class="btn">Registrarse</button>
+      </form>
+
+      <p id="register-msg" class="form-msg"></p>
+
+      <p class="switch-text">
+        ¿Ya tienes cuenta?
+        <a id="to-login" href="#">Inicia sesión</a>
+      </p>
+    </div>
+
   </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/app.js"></script>
+<script src="/static/js/login.js"></script>
 {% endblock %}

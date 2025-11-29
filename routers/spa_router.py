@@ -1,17 +1,17 @@
+# routers/spa_router.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from core.db import get_session
 from models.models import Spa, Usuario
-from models.schemas import SpaCreate, SpaRead
+from models.schemas import SpaCreate, SpaRead, SpaUpdate
 from core.auth import get_current_user, admin_spa_required, admin_principal_required
 from datetime import date
 
-# ✅ Todos los endpoints de este router exigen autenticación
 router = APIRouter(
     prefix="/spas",
-    tags=["Spas"],
-    dependencies=[Depends(get_current_user)]  # 👈 Esto fuerza autenticación global en este módulo
+    tags=["Spas"]
 )
+
 
 # -------------------- CREAR SPA --------------------
 @router.post("/", response_model=SpaRead, status_code=status.HTTP_201_CREATED)
@@ -20,9 +20,7 @@ def crear_spa(
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(admin_principal_required)
 ):
-    """
-    Crea un nuevo Spa (solo para admin_principal).
-    """
+
     spa_existente = session.exec(select(Spa).where(Spa.nombre == spa_data.nombre)).first()
     if spa_existente:
         raise HTTPException(status_code=400, detail="Ya existe un spa con ese nombre")
@@ -42,104 +40,98 @@ def crear_spa(
     return nuevo_spa
 
 
-# -------------------- LISTAR TODOS LOS SPAS --------------------
+# -------------------- LISTAR SPAS --------------------
 @router.get("/", response_model=list[SpaRead])
 def listar_spas(
     incluir_inactivos: bool = False,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):
-    """
-    Lista todos los Spas activos (requiere estar autenticado).
-    Si 'incluir_inactivos=True', solo los admin_principal pueden verlos.
-    """
-    if incluir_inactivos:
-        if current_user.rol != "admin_principal":
-            raise HTTPException(status_code=403, detail="No autorizado para ver spas inactivos")
-        spas = session.exec(select(Spa)).all()
-    else:
-        spas = session.exec(select(Spa).where(Spa.activo == True)).all()
 
+    if current_user.rol == "admin_principal":
+        if incluir_inactivos:
+            spas = session.exec(select(Spa)).all()
+        else:
+            spas = session.exec(select(Spa).where(Spa.activo == True)).all()
+        return spas
+    
+    if current_user.rol == "admin_spa":
+        spas = session.exec(select(Spa).where(
+            (Spa.activo == True) | 
+            (Spa.admin_spa_id == current_user.id)
+        )).all()
+        return spas
+    
+    spas = session.exec(select(Spa).where(Spa.activo == True)).all()
     return spas
 
 
-# -------------------- OBTENER SPA POR ID --------------------
+
+# -------------------- VER SPA --------------------
 @router.get("/{spa_id}", response_model=SpaRead)
 def obtener_spa(
     spa_id: int,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
-    """
-    Devuelve la información de un Spa específico (requiere autenticación).
-    """
     spa = session.get(Spa, spa_id)
     if not spa or not spa.activo:
         raise HTTPException(status_code=404, detail="Spa no encontrado o inactivo")
     return spa
 
 
-# -------------------- ACTUALIZAR SPA --------------------
+# -------------------- EDITAR SPA --------------------
 @router.patch("/{spa_id}", response_model=SpaRead)
 def actualizar_spa(
     spa_id: int,
-    spa_data: SpaCreate,
+    spa_data: SpaUpdate,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):
-    """
-    Actualiza la información de un Spa.
-    - admin_principal puede modificar cualquier spa.
-    - admin_spa solo puede modificar su propio spa.
-    """
     spa = session.get(Spa, spa_id)
     if not spa or not spa.activo:
         raise HTTPException(status_code=404, detail="Spa no encontrado o inactivo")
 
-    # Autorización
+    # admin_spa — solo su propio spa
     if current_user.rol == "admin_spa" and spa.admin_spa_id != current_user.id:
         raise HTTPException(status_code=403, detail="No autorizado para editar este spa")
 
-    # Actualizar campos enviados
     for campo, valor in spa_data.dict(exclude_unset=True).items():
         setattr(spa, campo, valor)
 
     spa.ultima_actualizacion = date.today()
 
-    session.add(spa)
     session.commit()
     session.refresh(spa)
     return spa
 
-
-# -------------------- ELIMINAR (LÓGICAMENTE) SPA --------------------
+# -------------------- DESACTIVAR SPA --------------------
 @router.delete("/{spa_id}")
 def eliminar_spa(
     spa_id: int,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(admin_principal_required)
 ):
-    """
-    Elimina lógicamente un Spa (solo admin_principal).
-    """
     spa = session.get(Spa, spa_id)
     if not spa:
         raise HTTPException(status_code=404, detail="Spa no encontrado")
 
     spa.activo = False
-    session.add(spa)
     session.commit()
     return {"message": f"Spa '{spa.nombre}' fue desactivado correctamente."}
 
 
-# -------------------- BUSCAR SPA POR NOMBRE O ZONA --------------------
+# -------------------- BUSCAR SPA --------------------
 @router.get("/buscar/", response_model=list[SpaRead])
 def buscar_spa(
     nombre: str | None = None,
     zona: str | None = None,
     session: Session = Depends(get_session),
-    current_user: Usuario = Depends(get_current_user),
 ):
-    
+    """
+    Este endpoint es público (no requiere login).
+    Perfecto para clientes.
+    """
+
     query = select(Spa).where(Spa.activo == True)
 
     if nombre:
@@ -148,6 +140,24 @@ def buscar_spa(
         query = query.where(Spa.zona.contains(zona))
 
     spas = session.exec(query).all()
-    if not spas:
-        raise HTTPException(status_code=404, detail="No se encontraron spas con esos criterios.")
     return spas
+
+
+# -------------------- RESTAURAR SPA --------------------
+@router.patch("/{spa_id}/restore")
+def restore_spa(
+    spa_id: int,
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(admin_principal_required)
+):
+    spa = session.get(Spa, spa_id)
+    if not spa:
+        raise HTTPException(status_code=404, detail="Spa no encontrado")
+    
+    spa.activo = True
+    spa.ultima_actualizacion = date.today()
+
+    session.commit()
+    session.refresh(spa)
+
+    return {"message": f"Spa '{spa.nombre}' restaurado correctamente."}

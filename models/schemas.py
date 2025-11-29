@@ -37,11 +37,14 @@ class SpaRead(BaseModel):
     nombre: str
     direccion: str
     zona: str
-    horario: str
+    horario: Optional[str] = None
     calificacion_promedio: float
+    activo: bool                   # ✔ NECESARIO
+    ultima_actualizacion: Optional[date] = None
 
     class Config:
         from_attributes = True
+
 
 # ---------- SERVICIO ----------
 class ServicioCreate(BaseModel):
@@ -64,6 +67,8 @@ class ServicioRead(BaseModel):
 class MaterialCreate(BaseModel):
     nombre: str
     tipo: str
+    class Config:
+        orm_mode = True
 
 class MaterialRead(BaseModel):
     id: int
@@ -72,6 +77,11 @@ class MaterialRead(BaseModel):
 
     class Config:
         from_attributes = True
+
+class MaterialUpdate(BaseModel):
+    nombre: Optional[str] = None
+    tipo: Optional[str] = None
+
 
 # ---------- RESEÑA ----------
 class ResenaCreate(BaseModel):
@@ -91,3 +101,10 @@ class ResenaRead(BaseModel):
 
     class Config:
         from_attributes = True
+
+# ---------- SPA UPDATE ----------
+class SpaUpdate(BaseModel):
+    nombre: Optional[str] = None
+    direccion: Optional[str] = None
+    zona: Optional[str] = None
+    horario: Optional[str] = None   
