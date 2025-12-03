@@ -118,25 +118,8 @@ function mostrarSpas(spas){
 
 
 
-async function verSpa(id){
-    try{
-        const res = await apiFetch(`/spas/${id}`, { method: "GET" });
-
-        if(res.ok){
-            const spa = await res.json();
-            alert(`
-SPA: ${spa.nombre}
-Dirección: ${spa.direccion}
-Zona: ${spa.zona}
-Horario: ${spa.horario ?? "No definido"}
-Última actualización: ${spa.ultima_actualizacion ?? "-"}
-            `);
-        } else {
-            alert("Este spa está inactivo o no existe");
-        }
-    } catch (err){
-        console.error("Error viendo spa:", err);
-    }
+function verSpa(id) {
+    window.location.href = `/spa_detalle?id=${id}`;
 }
 
 

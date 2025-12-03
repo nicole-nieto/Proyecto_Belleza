@@ -42,6 +42,7 @@ class SpaRead(BaseModel):
     activo: bool                   # ✔ NECESARIO
     ultima_actualizacion: Optional[date] = None
 
+
     class Config:
         from_attributes = True
 
@@ -109,3 +110,61 @@ class SpaUpdate(BaseModel):
     direccion: Optional[str] = None
     zona: Optional[str] = None
     horario: Optional[str] = None   
+
+    class Config:
+        orm_mode = True
+
+
+class SpaServicioRead(BaseModel):
+    id: int
+    servicio_id: int
+    nombre: str
+    descripcion: Optional[str] = None
+    precio: Optional[float] = None
+    duracion: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class SpaMaterialRead(BaseModel):
+    id: int
+    nombre: str
+    tipo: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class ResenaSimpleRead(BaseModel):
+    id: int
+    calificacion: int
+    comentario: str
+    fecha_creacion: date
+    usuario_id: int
+    usuario_nombre: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class SpaDetalleRead(BaseModel):
+    id: int
+    nombre: str
+    direccion: str
+    zona: str
+    horario: Optional[str]
+    calificacion_promedio: float
+    ultima_actualizacion: Optional[date]
+
+    servicios: list[SpaServicioRead]
+    materiales: list[SpaMaterialRead]
+    resenas: list[ResenaSimpleRead]
+
+    class Config:
+        from_attributes = True
+from pydantic import BaseModel
+
+class AsociarServicio(BaseModel):
+    precio: float
+    duracion: str

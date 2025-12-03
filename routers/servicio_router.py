@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 from core.db import get_session
 from core.auth import get_current_user
 from models.models import Servicio, Spa, SpaServicio, Usuario
-from models.schemas import ServicioCreate, ServicioRead
+from models.schemas import ServicioCreate, ServicioRead, AsociarServicio
 
 router = APIRouter(
     prefix="/servicios",
@@ -44,11 +44,11 @@ def crear_servicio(
 def asociar_servicio_a_spa(
     spa_id: int,
     servicio_id: int,
-    precio: float,
-    duracion: str,
+    datos: AsociarServicio,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user),
 ):
+
     spa = session.get(Spa, spa_id)
     if not spa or not spa.activo:
         raise HTTPException(status_code=404, detail="Spa no encontrado o inactivo")
@@ -60,25 +60,28 @@ def asociar_servicio_a_spa(
     if not servicio:
         raise HTTPException(status_code=404, detail="Servicio no encontrado")
 
-    relacion_existente = session.exec(
+    existe = session.exec(
         select(SpaServicio).where(
-            (SpaServicio.spa_id == spa_id) & (SpaServicio.servicio_id == servicio_id)
+            (SpaServicio.spa_id == spa_id) &
+            (SpaServicio.servicio_id == servicio_id)
         )
     ).first()
-    if relacion_existente:
+
+    if existe:
         raise HTTPException(status_code=400, detail="El servicio ya está asociado a este Spa.")
 
-    nueva_asociacion = SpaServicio(
+    nueva_rel = SpaServicio(
         spa_id=spa_id,
         servicio_id=servicio_id,
-        precio=precio,
-        duracion=duracion,
-        activo=True,
+        precio=datos.precio,
+        duracion=datos.duracion,
+        activo=True
     )
-    session.add(nueva_asociacion)
-    session.commit()
-    return {"message": f"Servicio '{servicio.nombre}' asociado al Spa '{spa.nombre}' correctamente."}
 
+    session.add(nueva_rel)
+    session.commit()
+
+    return {"message": f"Servicio '{servicio.nombre}' asociado al Spa '{spa.nombre}' correctamente."}
 
 # LISTAR TODOS LOS SERVICIOS (GLOBAL)
 @router.get("/", response_model=list[ServicioRead])

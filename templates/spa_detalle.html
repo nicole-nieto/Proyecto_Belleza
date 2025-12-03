@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Detalle del Spa{% endblock %}
+
+{% block content %}
+
+<div class="p-6">
+
+    <!-- TÍTULO -->
+    <h1 class="text-3xl font-bold mb-6" id="spaNombre">Cargando...</h1>
+
+    <!-- INFO PRINCIPAL -->
+    <div class="bg-white shadow p-4 rounded mb-6">
+        <p><strong>Dirección:</strong> <span id="spaDireccion"></span></p>
+        <p><strong>Zona:</strong> <span id="spaZona"></span></p>
+        <p><strong>Horario:</strong> <span id="spaHorario"></span></p>
+        <p><strong>Última actualización:</strong> <span id="spaUpdate"></span></p>
+        <p id="spaCalificacion" class="text-xl font-bold text-yellow-600"></p>
+    </div>
+
+    <!-- SERVICIOS -->
+    <h2 class="text-2xl font-semibold mt-8 mb-4">Servicios del Spa</h2>
+    <div id="listaServicios" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+    <!-- MATERIALES -->
+    <h2 class="text-2xl font-semibold mt-8 mb-4">Materiales que usa este Spa</h2>
+    <div id="listaMateriales" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+    <!-- RESEÑAS -->
+    <h2 class="text-2xl font-semibold mt-8 mb-4">Reseñas</h2>
+    <div id="listaResenas" class="space-y-3"></div>
+
+</div>
+
+<script src="/static/js/config.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/spa_detalle.js"></script>
+
+{% endblock %}

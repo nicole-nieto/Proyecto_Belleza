@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from core.db import get_session
 from models.models import Spa, Usuario
-from models.schemas import SpaCreate, SpaRead, SpaUpdate
+from models.schemas import SpaCreate, SpaRead, SpaUpdate, SpaDetalleRead
 from core.auth import get_current_user, admin_spa_required, admin_principal_required
 from datetime import date
 
@@ -68,15 +68,66 @@ def listar_spas(
 
 
 # -------------------- VER SPA --------------------
-@router.get("/{spa_id}", response_model=SpaRead)
+@router.get("/{spa_id}", response_model=SpaDetalleRead)
 def obtener_spa(
     spa_id: int,
     session: Session = Depends(get_session),
 ):
     spa = session.get(Spa, spa_id)
+
     if not spa or not spa.activo:
         raise HTTPException(status_code=404, detail="Spa no encontrado o inactivo")
-    return spa
+
+    # Obtener servicios del spa con detalle
+    servicios = []
+    for assoc in spa.servicios_assoc:
+        if assoc.activo:
+            servicios.append({
+                "id": assoc.id,
+                "servicio_id": assoc.servicio.id,
+                "nombre": assoc.servicio.nombre,
+                "descripcion": assoc.servicio.descripcion,
+                "precio": assoc.precio,
+                "duracion": assoc.duracion,
+            })
+
+    # Obtener materiales
+    materiales = []
+    for assoc in spa.materiales_assoc:
+        if assoc.activo:
+            materiales.append({
+                "id": assoc.material.id,
+                "nombre": assoc.material.nombre,
+                "tipo": assoc.material.tipo
+            })
+
+    # Obtener reseñas
+    resenas = []
+    for r in spa.resenas:
+        if r.activo:
+            resenas.append({
+                "id": r.id,
+                "calificacion": r.calificacion,
+                "comentario": r.comentario,
+                "fecha_creacion": r.fecha_creacion,
+                "usuario_id": r.usuario_id,
+                "usuario_nombre": r.usuario.nombre if r.usuario else None,
+            })
+
+    # Devolver todo
+    return {
+        "id": spa.id,
+        "nombre": spa.nombre,
+        "direccion": spa.direccion,
+        "zona": spa.zona,
+        "horario": spa.horario,
+        "calificacion_promedio": spa.calificacion_promedio,
+        "ultima_actualizacion": spa.ultima_actualizacion,
+        "servicios": servicios,
+        "materiales": materiales,
+        "resenas": resenas
+    }
+
 
 
 # -------------------- EDITAR SPA --------------------

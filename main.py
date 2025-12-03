@@ -33,6 +33,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # TEMPLATES
 templates = Jinja2Templates(directory="templates")
 
+@app.get("/spa_detalle")
+def spa_detalle(request: Request):
+    return templates.TemplateResponse("spa_detalle.html", {"request": request})
+
 # ROUTERS
 app.include_router(auth_router)
 app.include_router(spa_router)

@@ -130,15 +130,28 @@ def eliminar_material(
 
     return {"message": "Material eliminado definitivamente."}
 
-# -------------------- OBTENER MATERIAL POR ID --------------------
-@router.get("/{material_id}", response_model=MaterialRead)
-def obtener_material(
-    material_id: int,
-    session: Session = Depends(get_session),
-    current_user: Usuario = Depends(get_current_user)
+# LISTAR MATERIALES POR SPA
+@router.get("/por_spa/{spa_id}")
+def materiales_por_spa(
+    spa_id: int,
+    session: Session = Depends(get_session)
 ):
-    material = session.get(Material, material_id)
-    if not material:
-        raise HTTPException(status_code=404, detail="Material no encontrado")
+    spa = session.get(Spa, spa_id)
+    if not spa or not spa.activo:
+        raise HTTPException(status_code=404, detail="Spa no encontrado")
 
-    return material
+    relaciones = session.exec(
+        select(SpaMaterial).where(SpaMaterial.spa_id == spa_id)
+    ).all()
+
+    materiales = []
+    for rel in relaciones:
+        mat = session.get(Material, rel.material_id)
+        if mat:
+            materiales.append({
+                "id": mat.id,
+                "nombre": mat.nombre,
+                "tipo": mat.tipo
+            })
+
+    return materiales
