@@ -113,6 +113,6 @@ def admin_spa_required(user=Depends(get_current_user)):
     return user
 
 def cliente_required(user=Depends(get_current_user)):
-    if user.rol != "cliente":
-        raise HTTPException(status_code=403, detail="Solo cliente registrado")
+    if user.rol != "usuario":
+        raise HTTPException(status_code=403, detail="Solo usuario registrado")
     return user

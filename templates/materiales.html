@@ -1,45 +1,67 @@
 {% extends "base.html" %}
-{% block title %}Materiales{% endblock %}
-
+{% block title %}Inicio{% endblock %}
 {% block content %}
-<div class="p-4">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Materiales</title>
+  <!-- Si tienes stylesheet, ajusta la ruta; si no, coméntalo -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>Gestión de Materiales</h1>
 
-    <div class="flex justify-between mb-4 gap-4">
+  <!-- Mensajes/estado -->
+  <div id="mensaje" role="status" aria-live="polite"></div>
 
-        <div class="flex gap-2 w-2/3">
-            <input id="inputBuscar" type="text" placeholder="Buscar por nombre"
-                   class="border p-2 w-full" oninput="buscarMateriales()">
-        </div>
+  <!-- Controles (solo se mostrarán si rol admin) -->
+  <div id="acciones-admin" style="margin:12px 0; display:none;">
+    <button id="btnMostrarCrear">➕ Crear Material</button>
+  </div>
 
-        <div id="adminActions" class="flex justify-end items-center w-1/3">
-            <!-- Botón visible solo para admin -->
-        </div>
-    </div>
+  <!-- Tabla -->
+  <table border="1" width="100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaMateriales"></tbody>
+  </table>
 
-    <div id="materialList"
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    </div>
+  <!-- Formulario oculto -->
+  <div id="formContainer" style="display:none; margin-top:16px;">
+    <h2 id="tituloForm">Crear Material</h2>
+    <form id="formMaterial">
+      <input type="hidden" id="materialId" />
 
-</div>
+      <div>
+        <label for="nombre">Nombre</label><br>
+        <input id="nombre" name="nombre" required />
+      </div>
 
-<!-- MODAL CREAR / EDITAR MATERIAL -->
-<div id="modalMaterial" class="hidden fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-    <div class="bg-white p-6 rounded w-96 shadow-lg">
-        
-        <h2 id="modalTitulo" class="text-xl font-bold mb-3">Crear Material</h2>
+      <div>
+        <label for="tipo">Tipo</label><br>
+        <input id="tipo" name="tipo" required />
+      </div>
 
-        <input id="matNombre" class="border p-2 w-full mb-2" placeholder="Nombre">
-        <input id="matTipo" class="border p-2 w-full mb-2" placeholder="Tipo">
+      <div style="margin-top:8px;">
+        <button type="submit" id="btnGuardar">Guardar</button>
+        <button type="button" id="btnCancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
 
-        <div class="flex justify-end gap-2 mt-4">
-            <button onclick="cerrarModal()" class="px-3 py-1 bg-gray-600 text-white rounded">Cancelar</button>
-            <button onclick="guardarMaterial()" class="px-3 py-1 bg-blue-600 text-white rounded">Guardar</button>
-        </div>
+  <!-- Orden: config.js (si lo usas), app.js (define window.apiFetch), luego este materiales.js -->
+  <script src="/static/js/config.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/materiales.js"></script>
+</body>
+</html>
 
-    </div>
-</div>
-
-<script src="/static/js/config.js"></script>
-<script src="/static/js/app.js"></script>
-<script src="/static/js/materiales.js"></script>
 {% endblock %}

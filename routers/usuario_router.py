@@ -4,12 +4,22 @@ from core.db import get_session
 from models.models import Usuario
 from models.schemas import UsuarioCreate, UsuarioRead
 from core.auth import hash_password, get_current_user, admin_principal_required
+import templates
+from fastapi.requests import Request
 
 router = APIRouter(
     prefix="/usuarios",
     tags=["Usuarios"],
     dependencies=[Depends(get_current_user)]  # 👈 Todos deben estar autenticados
 )
+@router.get("/usuarios", dependencies=[Depends(admin_principal_required)])
+
+
+@router.get("/perfil")
+def perfil_usuario(request: Request, current_user: Usuario = Depends(get_current_user)):
+    if current_user.role != "user":  # Solo usuarios normales
+        raise HTTPException(status_code=403, detail="Acceso denegado")
+    return templates.TemplateResponse("perfil.html", {"request": request, "user": current_user})
 
 # -------------------- CREAR ADMINISTRADOR DE SPA --------------------
 @router.post("/crear_admin_spa", response_model=UsuarioRead)
@@ -95,3 +105,20 @@ def desactivar_usuario(
     session.add(usuario)
     session.commit()
     return {"message": f"El usuario '{usuario.nombre}' ha sido desactivado correctamente."}
+
+# -------------------- REACTIVAR USUARIO --------------------
+@router.patch("/activar/{usuario_id}")
+def activar_usuario(
+    usuario_id: int,
+    session: Session = Depends(get_session),
+    current_user=Depends(admin_principal_required),
+):
+    usuario = session.get(Usuario, usuario_id)
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    usuario.activo = True
+    session.add(usuario)
+    session.commit()
+    return {"message": f"El usuario '{usuario.nombre}' ha sido activado correctamente."}
+

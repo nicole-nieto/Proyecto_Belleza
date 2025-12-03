@@ -63,17 +63,14 @@
   }
 
   // logout handler
-  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const btnLogout = document.getElementById('btn-logout');
     if (btnLogout) {
-      btnLogout.addEventListener('click', function () {
+        btnLogout.addEventListener('click', function () {
         window.clearSession();
         location.href = '/login';
-      });
+        });
     }
     updateNav();
-  });
-
-  
-
+    });
 })();

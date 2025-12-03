@@ -29,7 +29,7 @@ class Usuario(SQLModel, table=True):
     nombre: str
     correo: str
     contrasena: str
-    rol: str = Field(default="cliente")  # 👈 Valor por defecto
+    rol: str = Field(default="usuario") # 👈 Valor por defecto
     activo: bool = True
 
     spas: List["Spa"] = Relationship(back_populates="admin_spa")
@@ -61,7 +61,6 @@ class Servicio(SQLModel, table=True):
     descripcion: Optional[str] = None
     duracion_ref: Optional[str] = None
     precio_ref: Optional[float] = None
-    activo: bool = True
 
     spas_assoc: List[SpaServicio] = Relationship(back_populates="servicio")
 
@@ -70,7 +69,6 @@ class Material(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nombre: str
     tipo: Optional[str] = None
-    activo: bool = True
 
     spas_assoc: List[SpaMaterial] = Relationship(back_populates="material")
 

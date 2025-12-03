@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mi Perfil</title>
+</head>
+<body>
+  <h1>Mi Perfil</h1>
+  <p>Nombre: {{ user.nombre }}</p>
+  <p>Correo: {{ user.email }}</p>
+  <p>Teléfono: {{ user.telefono }}</p>
+
+  <form action="/logout" method="post">
+    <button type="submit">Cerrar sesión</button>
+  </form>
+</body>
+</html>

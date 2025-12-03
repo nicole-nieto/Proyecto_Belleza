@@ -1,7 +1,69 @@
 {% extends "base.html" %}
 {% block title %}Reportes{% endblock %}
 {% block content %}
-  <h2>Reportes (Admin principal)</h2>
-  <button id="btn-ref-reportes">Cargar reportes</button>
-  <pre id="reportes-output"></pre>
+
+<style>
+  .titulo-pagina {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .contenedor-grafica {
+    background: #ffffff;
+    padding: 25px;
+    margin: 20px auto;
+    border-radius: 14px;
+    max-width: 900px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .subtitulo {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #top5 {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  #top5 li {
+    background: #f3f3f3;
+    margin: 8px 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
+
+<h2 class="titulo-pagina">📈 Reportes ☻</h2>
+
+<div class="contenedor-grafica">
+  <p class="subtitulo">🏆 TOP 3 spas mejor calificados</p>
+  <ul id="top5"></ul>
+</div>
+
+<div class="contenedor-grafica">
+  <p class="subtitulo">📊 Número de reseñas por spa</p>
+  <canvas id="chartResenasSpa"></canvas>
+</div>
+
+
+<div class="contenedor-grafica">
+  <p class="subtitulo">⭐ Promedio de calificaciones por spa</p>
+  <canvas id="chartPromedioSpa"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/reportes.js"></script>
+
 {% endblock %}

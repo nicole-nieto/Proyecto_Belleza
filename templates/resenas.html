@@ -1,6 +1,72 @@
-{% extends "base.html" %}
+<!-- templates/resenas.html -->
+{% extends 'base.html' %}
+
 {% block title %}Reseñas{% endblock %}
+
 {% block content %}
-  <h2>Mis Reseñas</h2>
-  <div id="mis-resenas" class="grid"></div>
+  <h2>Reseñas</h2>
+
+  <section id="crear-resena-section">
+    <h3>Escribir una reseña</h3>
+    <div id="sin-sesion-msg" class="info hidden">Debes iniciar sesión como usuario para crear reseñas.</div>
+
+    <form id="form-resena">
+      <label for="spa-select">Selecciona el spa</label>
+      <select id="spa-select" required>
+        <option value="">Cargando spas...</option>
+      </select>
+
+      <label for="calificacion">Calificación</label>
+      <select id="calificacion" required>
+        <option value="">--</option>
+        <option value="5">5 - Excelente</option>
+        <option value="4">4 - Muy bien</option>
+        <option value="3">3 - Aceptable</option>
+        <option value="2">2 - Regular</option>
+        <option value="1">1 - Malo</option>
+      </select>
+
+      <label for="comentario">Comentario</label>
+      <textarea id="comentario" rows="4" placeholder="Escribe tu opinión..." required></textarea>
+
+      <div class="form-actions">
+        <button type="submit" id="btn-crear">Publicar reseña</button>
+        <button type="reset" id="btn-reset">Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <hr />
+
+  <section id="lista-resenas-section">
+    <h3>Reseñas por spa</h3>
+
+    <div class="controls">
+      <label for="spa-filter">Ver reseñas de:</label>
+      <select id="spa-filter">
+        <option value="">-- Selecciona un spa --</option>
+      </select>
+      <button id="btn-cargar">Cargar</button>
+    </div>
+
+    <div id="resenas-list">
+      <!-- reseñas renderizadas aquí -->
+    </div>
+  </section>
+
+  <hr />
+
+  <section id="mis-resenas-section">
+    <h3>Mis reseñas</h3>
+    <div id="mis-resenas-list">
+      <!-- Mis reseñas (editable/eliminable) -->
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/config.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/resenas.js"></script>
 {% endblock %}

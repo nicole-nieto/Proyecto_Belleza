@@ -1,25 +1,70 @@
 {% extends "base.html" %}
 {% block title %}Usuarios{% endblock %}
 {% block content %}
-  <h2>Usuarios</h2>
-  <div class="actions">
-    <button id="btn-refresh-usuarios">Refrescar</button>
-    <button id="btn-crear-admin-spa">Crear admin spa</button>
-  </div>
 
-  <table id="usuarios-table" class="table">
-    <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Rol</th><th>Activo</th><th>Acciones</th></tr></thead>
-    <tbody></tbody>
-  </table>
+<style>
+  .card-info {
+    background: #fff;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 
-  <div id="usuario-form-panel" class="panel hidden">
-    <h3>Crear Administrador de Spa</h3>
-    <form id="usuario-form">
-      <input id="u-nombre" placeholder="Nombre" required />
-      <input id="u-correo" placeholder="Correo" required type="email" />
-      <input id="u-contrasena" placeholder="Contraseña" required type="password" />
-      <button type="submit">Crear</button>
-      <button type="button" id="u-cancel">Cancelar</button>
-    </form>
-  </div>
+  .usuarios-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .usuarios-tabla th, .usuarios-tabla td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+  }
+
+  .btn-bloquear {
+    background: #ff6961;
+  }
+
+  .btn-activar {
+    background: #77dd77;
+  }
+</style>
+
+
+<h2>👥 Gestión de usuarios</h2>
+
+<div style="display: flex;">
+  <div class="card-info">👤 Total: <span id="total"></span></div>
+  <div class="card-info">🟢 Activos: <span id="activos"></span></div>
+  <div class="card-info">🔴 Bloqueados: <span id="bloqueados"></span></div>
+</div>
+
+<table class="usuarios-tabla">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Rol</th>
+      <th>Estado</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody id="tablaUsuarios"></tbody>
+</table>
+<script src="/static/js/config.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/usuario.js"></script>
+
 {% endblock %}

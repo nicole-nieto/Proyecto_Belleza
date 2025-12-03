@@ -13,7 +13,7 @@ class UsuarioCreate(BaseModel):
     nombre: str
     correo: EmailStr
     contrasena: str
-    rol: Optional[str] = "cliente"
+    rol: Optional[str] = "usuario"
 
 class UsuarioRead(BaseModel):
     id: int
@@ -87,9 +87,8 @@ class MaterialUpdate(BaseModel):
 class ResenaCreate(BaseModel):
     calificacion: int
     comentario: str
-    fecha_creacion: date
     spa_id: int
-    usuario_id: int
+
 
 class ResenaRead(BaseModel):
     id: int
@@ -97,10 +96,12 @@ class ResenaRead(BaseModel):
     comentario: str
     fecha_creacion: date
     spa_id: int
+    spa_nombre: Optional[str] = None        # <-- agregado para mostrar nombre del spa en frontend
     usuario_id: int
+    usuario_nombre: Optional[str] = None    # <-- opcional, útil para vistas admin
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 # ---------- SPA UPDATE ----------
 class SpaUpdate(BaseModel):
