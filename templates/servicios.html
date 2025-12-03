@@ -3,57 +3,64 @@
 
 {% block content %}
 
-<h1 class="titulo">Gestión de Servicios</h1>
+<h1 class="titulo-spa-principal">Gestión de Servicios</h1>
 
-<div id="acciones-admin" style="display:none;">
-  <button id="btnMostrarCrear" class="btn">➕ Crear Servicio</button>
+<div id="acciones-admin" class="acciones" style="display:none; margin:12px 0;">
+    <button id="btnMostrarCrear" class="btn-accent">➕ Crear Servicio</button>
 </div>
 
-<!-- FORMULARIO CREAR/EDITAR -->
-<div id="formContainer" class="card" style="display:none; max-width:600px;">
-  <h3 id="tituloForm">Crear Servicio</h3>
+<div id="formContainer" class="detalles-spa-card form-aestethic" style="display:none; max-width:600px; margin-top:24px; padding:20px;">
+    <h2 id="tituloForm" class="titulo-form-aestethic">Crear Servicio</h2>
 
-  <form id="formServicio">
-    <input type="hidden" id="servicioId">
+    <form id="formServicio">
+        <input type="hidden" id="servicioId">
 
-    <label>Nombre:</label>
-    <input type="text" id="nombre" required />
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required />
+        </div>
 
-    <label>Descripción:</label>
-    <textarea id="descripcion"></textarea>
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion"></textarea>
+        </div>
 
-    <label>Duración Referencial:</label>
-    <input type="text" id="duracion_ref" />
+        <div class="form-group">
+            <label for="duracion_ref">Duración Referencial:</label>
+            <input type="text" id="duracion_ref" />
+        </div>
 
-    <label>Precio Referencial:</label>
-    <input type="number" step="0.01" id="precio_ref" />
+        <div class="form-group">
+            <label for="precio_ref">Precio Referencial:</label>
+            <input type="number" step="0.01" id="precio_ref" />
+        </div>
 
-    <div style="margin-top:8px;">
-      <button type="submit" class="btn">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn-secondary">Cancelar</button>
-    </div>
-  </form>
+        <div class="form-actions" style="margin-top:16px;">
+            <button type="submit" class="btn-guardar">Guardar</button>
+            <button type="button" id="btnCancelar" class="btn-cancelar">Cancelar</button>
+        </div>
+    </form>
 </div>
 
-<hr />
+<hr style="display:none;" />
+<div class="card-materiales-listado">
+    <h2 class="titulo-seccion-spa" style="margin-bottom:20px;">Listado de Servicios</h2>
 
-<h2>Listado de Servicios</h2>
+    <table class="tabla-gestion-aestethic" style="width:100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Duración</th>
+                <th>Precio</th>
+                <th id="th-acciones">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaServicios"></tbody>
+    </table>
+</div>
 
-<table class="tabla" style="width:100%; border-collapse:collapse;">
-  <thead>
-    <tr>
-      <th>☻</th>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Duración promedio</th>
-      <th>Precio Promedio</th>
-      <th id="th-acciones">Acciones</th>
-    </tr>
-  </thead>
-  <tbody id="tablaServicios"></tbody>
-</table>
-
-<!-- SCRIPTS -->
 <script src="/static/js/config.js"></script>
 <script src="/static/js/app.js"></script>
 <script src="/static/js/servicios.js"></script>

@@ -1,72 +1,69 @@
-<!-- templates/resenas.html -->
 {% extends 'base.html' %}
 
 {% block title %}Reseñas{% endblock %}
 
 {% block content %}
-  <h2>Reseñas</h2>
+<h1 class="titulo-spa-principal">Gestión de Reseñas</h1>
 
-  <section id="crear-resena-section">
-    <h3>Escribir una reseña</h3>
-    <div id="sin-sesion-msg" class="info hidden">Debes iniciar sesión como usuario para crear reseñas.</div>
+<section id="crear-resena-section" class="card-materiales-listado">
+    <h3 class="titulo-seccion-spa">✍️ Escribir una reseña</h3>
+    <div id="sin-sesion-msg" class="mensaje-alerta error hidden">Debes iniciar sesión como usuario para crear reseñas.</div>
 
-    <form id="form-resena">
-      <label for="spa-select">Selecciona el spa</label>
-      <select id="spa-select" required>
-        <option value="">Cargando spas...</option>
-      </select>
+    <form id="form-resena" class="form-aesthetic">
+        <div class="form-group">
+            <label for="spa-select">Selecciona el spa</label>
+            <select id="spa-select" required></select>
+        </div>
 
-      <label for="calificacion">Calificación</label>
-      <select id="calificacion" required>
-        <option value="">--</option>
-        <option value="5">5 - Excelente</option>
-        <option value="4">4 - Muy bien</option>
-        <option value="3">3 - Aceptable</option>
-        <option value="2">2 - Regular</option>
-        <option value="1">1 - Malo</option>
-      </select>
+        <div class="form-group">
+            <label for="calificacion">Calificación</label>
+            <select id="calificacion" required>
+                <option value="">--</option>
+                <option value="5">5 - Excelente ⭐⭐⭐⭐⭐</option>
+                <option value="4">4 - Muy bien ⭐⭐⭐⭐</option>
+                <option value="3">3 - Aceptable ⭐⭐⭐</option>
+                <option value="2">2 - Regular ⭐⭐</option>
+                <option value="1">1 - Malo ⭐</option>
+            </select>
+        </div>
 
-      <label for="comentario">Comentario</label>
-      <textarea id="comentario" rows="4" placeholder="Escribe tu opinión..." required></textarea>
+        <div class="form-group">
+            <label for="comentario">Comentario</label>
+            <textarea id="comentario" rows="4" placeholder="Escribe tu opinión..." required></textarea>
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" id="btn-crear">Publicar reseña</button>
-        <button type="reset" id="btn-reset">Limpiar</button>
-      </div>
+        <div class="form-actions" style="margin-top:15px;">
+            <button type="submit" id="btn-crear" class="btn-guardar">Publicar reseña</button>
+            <button type="reset" id="btn-reset" class="btn-cancelar">Limpiar</button>
+        </div>
     </form>
-  </section>
+</section>
 
-  <hr />
+<hr style="border-top:2px solid var(--accent); margin:30px 0;"/>
 
-  <section id="lista-resenas-section">
-    <h3>Reseñas por spa</h3>
+<section id="lista-resenas-section">
+    <h3 class="titulo-seccion-spa">Reseñas por spa</h3>
 
-    <div class="controls">
-      <label for="spa-filter">Ver reseñas de:</label>
-      <select id="spa-filter">
-        <option value="">-- Selecciona un spa --</option>
-      </select>
-      <button id="btn-cargar">Cargar</button>
+    <div class="controls card-controls">
+        <label for="spa-filter">Ver reseñas de:</label>
+        <select id="spa-filter" style="width:250px; display:inline-block;"></select>
+        <button id="btn-cargar" class="btn-accent" style="width:auto; display:inline-block;">Cargar</button>
     </div>
 
-    <div id="resenas-list">
-      <!-- reseñas renderizadas aquí -->
-    </div>
-  </section>
+    <div id="resenas-list" class="resenas-grid"></div>
+</section>
 
-  <hr />
+<hr style="border-top:2px solid var(--accent); margin:30px 0;"/>
 
-  <section id="mis-resenas-section">
-    <h3>Mis reseñas</h3>
-    <div id="mis-resenas-list">
-      <!-- Mis reseñas (editable/eliminable) -->
-    </div>
-  </section>
+<section id="mis-resenas-section">
+    <h3 class="titulo-seccion-spa">Mis reseñas</h3>
+    <div id="mis-resenas-list" class="resenas-grid"></div>
+</section>
 
 {% endblock %}
 
 {% block scripts %}
-  <script src="/static/js/config.js"></script>
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/resenas.js"></script>
+<script src="/static/js/config.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/resenas.js"></script>
 {% endblock %}

@@ -1,38 +1,69 @@
 {% extends "base.html" %}
-{% block title %}Detalle del Spa{% endblock %}
-
+{% block title %}Detalles del Spa{% endblock %}
 {% block content %}
+<div class="container p-4">
+    <div class="layout-spa-fijo">
 
-<div class="p-6">
+        <div class="col-70"> 
+            <h1 id="spaNombre" class="titulo-spa-principal text-3xl font-bold mb-4">
+                Título del Spa
+            </h1>
 
-    <!-- TÍTULO -->
-    <h1 class="text-3xl font-bold mb-6" id="spaNombre">Cargando...</h1>
+            <div id="galeriaSpa" class="galeria-grid mb-4"></div>
+            
+            <section id="seccionSubidaImagen" class="admin-panel my-8 hidden">
+                <h3 class="titulo-seccion-spa text-2xl font-semibold mb-3">📸 Subir Nueva Imagen</h3>
+                <p class="muted mb-4">Sube una nueva foto para este Spa. Solo visible para administradores.</p>
+                
+                <form id="formSubidaImagen" enctype="multipart/form-data" class="bg-gray-100 p-4 rounded-lg shadow-inner">
+                    <input type="hidden" name="spa_id_input" id="spa_id_input">
+                    
+                    <div class="mb-3">
+                        <label for="fileInput" class="block font-semibold mb-1">Archivo de Imagen:</label>
+                        <input type="file" name="file" id="fileInput" required accept="image/jpeg, image/png" class="w-full border p-2 bg-white rounded">
+                    </div>
+                    
+                    <div class="mb-4 flex items-center">
+                        <input type="checkbox" name="es_principal" id="es_principal_input" class="mr-2">
+                        <label for="es_principal_input">Establecer como Imagen Principal</label>
+                    </div>
+                    
+                    <button type="submit" id="btnSubirImagen" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                        Subir Imagen
+                    </button>
+                    
+                    <p id="mensajeSubida" class="mt-3 text-sm hidden"></p>
+                </form>
+            </section>
 
-    <!-- INFO PRINCIPAL -->
-    <div class="bg-white shadow p-4 rounded mb-6">
-        <p><strong>Dirección:</strong> <span id="spaDireccion"></span></p>
-        <p><strong>Zona:</strong> <span id="spaZona"></span></p>
-        <p><strong>Horario:</strong> <span id="spaHorario"></span></p>
-        <p><strong>Última actualización:</strong> <span id="spaUpdate"></span></p>
-        <p id="spaCalificacion" class="text-xl font-bold text-yellow-600"></p>
+            <h2 class="titulo-seccion-spa text-2xl font-semibold mb-2">Servicios</h2>
+            <div id="seccion-servicios">
+                <div id="listaServicios" class="grid-list"></div>
+            </div>
+
+            <h2 class="titulo-seccion-spa text-2xl font-semibold mt-8 mb-2">Materiales</h2>
+            <div id="seccion-materiales">
+                <div id="listaMateriales" class="grid-list"></div>
+            </div>
+
+            <h2 class="titulo-seccion-spa text-2xl font-semibold mt-8 mb-2">Reseñas</h2>
+            <div id="seccion-resenas">
+                <div id="listaResenas" class="grid-list"></div>
+            </div>
+        </div>
+
+        <div class="col-30 detalles-spa-card">
+            <p><strong>Dirección:</strong> <span id="spaDireccion"></span></p>
+            <p><strong>Zona:</strong> <span id="spaZona"></span></p>
+            <p><strong>Horario:</strong> <span id="spaHorario"></span></p>
+            <p><strong>Puntuación:</strong> <span id="spaCalificacion"></span></p>
+            <p class="muted mt-3">Última Actualización: <span id="spaUpdate"></span></p>
+        </div>
+
     </div>
-
-    <!-- SERVICIOS -->
-    <h2 class="text-2xl font-semibold mt-8 mb-4">Servicios del Spa</h2>
-    <div id="listaServicios" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
-    <!-- MATERIALES -->
-    <h2 class="text-2xl font-semibold mt-8 mb-4">Materiales que usa este Spa</h2>
-    <div id="listaMateriales" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
-    <!-- RESEÑAS -->
-    <h2 class="text-2xl font-semibold mt-8 mb-4">Reseñas</h2>
-    <div id="listaResenas" class="space-y-3"></div>
-
 </div>
 
 <script src="/static/js/config.js"></script>
 <script src="/static/js/app.js"></script>
 <script src="/static/js/spa_detalle.js"></script>
-
 {% endblock %}

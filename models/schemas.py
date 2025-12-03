@@ -1,8 +1,22 @@
 # schemas.py
-from pydantic import BaseModel, EmailStr
-from typing import Optional
+from pydantic import BaseModel, EmailStr, Field
+from typing import Optional, List
 from datetime import date
 
+class ImageBase(BaseModel):
+    """Esquema base para una imagen del Spa."""
+    url: str = Field(..., description="Ruta o URL del archivo de imagen.")
+    es_principal: bool = Field(False, description="Indica si esta imagen es la principal.")
+
+class ImageCreate(ImageBase):
+    pass
+
+class ImageOut(ImageBase):
+    id: int
+    spa_id: int 
+    
+    class Config:
+        from_attributes = True # O orm_mode = True
 # ---------- USUARIO ----------
 class UsuarioBase(BaseModel):
     nombre: str
@@ -157,14 +171,16 @@ class SpaDetalleRead(BaseModel):
     calificacion_promedio: float
     ultima_actualizacion: Optional[date]
 
+    imagenes: List[ImageOut] = Field(default=[], description="Lista de imágenes asociadas al spa.") # pyright: ignore[reportUndefinedVariable]
+
     servicios: list[SpaServicioRead]
     materiales: list[SpaMaterialRead]
     resenas: list[ResenaSimpleRead]
 
     class Config:
         from_attributes = True
-from pydantic import BaseModel
 
 class AsociarServicio(BaseModel):
     precio: float
     duracion: str
+

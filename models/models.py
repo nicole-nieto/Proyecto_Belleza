@@ -46,6 +46,7 @@ class Spa(SQLModel, table=True):
     activo: bool = True
     ultima_actualizacion: Optional[date] = None
     desactualizado: bool = False
+    imagenes: List["SpaImage"] = Relationship(back_populates="spa") # <-- ¡NECESARIO!
 
     admin_spa_id: Optional[int] = Field(default=None, foreign_key="usuario.id")
     admin_spa: Optional[Usuario] = Relationship(back_populates="spas")
@@ -91,3 +92,19 @@ class SpaUpdate(SQLModel):
     direccion: str | None = None
     zona: str | None = None
     horario: str | None = None
+
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+
+Base = declarative_base()
+
+class SpaImage(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    spa_id: Optional[int] = Field(default=None, foreign_key="spa.id") # Clave foránea al Spa
+    url: str # Ya que no usas Optional, debe ser una columna NOT NULL
+    es_principal: bool = Field(default=False)
+    
+    # La relación inversa
+    spa: Optional["Spa"] = Relationship(back_populates="imagenes")

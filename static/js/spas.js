@@ -64,7 +64,7 @@ function mostrarSpas(spas){
 
     spas.forEach(spa => {
         const card = document.createElement("div");
-        card.className = "bg-white shadow-md p-4 rounded";
+        card.className = "card-spa-estilo";
 
         const rol = window.getRol();
 
@@ -98,16 +98,11 @@ function mostrarSpas(spas){
         }
 
         card.innerHTML = `
-            <h3 class="text-xl font-bold">${spa.nombre} ${estadoTexto}</h3>
-
+            <h3 class="text-xl font-bold mb-2">${spa.nombre} ${estadoTexto}</h3>
             <p><strong>Dirección:</strong> ${spa.direccion}</p>
             <p><strong>Zona:</strong> ${spa.zona}</p>
             <p><strong>Horario:</strong> ${spa.horario ?? "No definido"}</p>
-
-            <button onclick="verSpa(${spa.id})" 
-                    class="bg-blue-600 text-white px-3 py-1 mt-3 rounded w-full">
-                Ver
-            </button>
+            <button onclick="verSpa(${spa.id})" class="btn-view mt-2 w-full">Ver</button>
 
             ${botonesAdmin}
         `;

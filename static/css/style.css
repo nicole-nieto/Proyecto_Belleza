@@ -1,3 +1,6 @@
+/* static/css/style.css - Versión Optimizada Final */
+
+/* === 1. Variables Globales === */
 :root{
   --bg: #fff7fb;
   --card: #fff;
@@ -8,6 +11,7 @@
   --round: 12px;
 }
 
+/* === 2. Resets y Estilos Base === */
 *{box-sizing:border-box;font-family:Inter, system-ui, Arial, sans-serif}
 body{margin:0;background:var(--bg);color:var(--text)}
 .container{max-width:1000px;margin:0 auto;padding:20px}
@@ -26,7 +30,526 @@ nav button{margin-left:8px}
 .table th,.table td{padding:8px;text-align:left;border-bottom:1px solid #eee}
 .actions{margin:12px 0}
 .auth-card{max-width:420px;margin:20px auto}
+
+/* Estilos de elementos de formulario y botones (GENERAL) */
 input,textarea,button,select{display:block;width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #eee}
 button{cursor:pointer;background:var(--accent);border:none;color:#222;padding:10px;font-weight:600}
+
 .muted{color:var(--muted);font-size:14px}
 .site-footer{padding:16px;text-align:center;color:var(--muted);margin-top:24px}
+
+/* === 3. Estilos Personalizados - Listado de Spas === */
+
+/* Estilo de la Tarjeta del Listado (spas.html) */
+.card-spa-estilo {
+  background-color: #fff5f8;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 4px 4px 0px #000;
+}
+/* Estilo del Botón de vista (Ver) */
+.btn-view {
+  border: 1px solid #000;
+}
+/* Estilo de Inputs de Búsqueda */
+input[type="text"] {
+  border: 2px solid #000 !important;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 2px 2px 0px #000;
+}
+
+/* === 4. Estilos Personalizados - Detalle de Spa (spa_detalle.html) === */
+
+/* Título principal grande */
+.titulo-spa-principal {
+  display: inline-block;
+  background-color: var(--accent-2); 
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  margin-bottom: 20px !important;
+}
+
+/* Galería de Imágenes */
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); 
+  gap: 8px;
+}
+.galeria-grid > div {
+  height: 120px; 
+  border-radius: 8px;
+}
+
+/* Tarjeta de detalles del spa (Columna Derecha) */
+.detalles-spa-card {
+  background-color: #fff5f8;
+  border: 3px solid #000; 
+  border-radius: 25px;
+  padding: 24px;
+  box-shadow: 6px 6px 0px #000;
+  line-height: 1.8;
+  height: fit-content;
+}
+
+/* Estilo para las tarjetas internas de Servicios, Materiales y Reseñas */
+.card-detalle-estilo {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 2px 2px 0px #000;
+}
+
+/* Contenedor de las listas de Servicios/Materiales/Reseñas */
+.grid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* --- Garantía de Layout de 2 Columnas (CORREGIDA: 70%/30% y más espacio) --- */
+
+/* Estilo por defecto (móvil): stack verticalmente */
+.layout-spa-fijo {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Espaciado más amplio entre columnas */
+}
+
+/* Aplicar 2 columnas solo en pantallas grandes (más de 768px) */
+@media (min-width: 768px) {
+  .layout-spa-fijo {
+    flex-direction: row; /* Horizontal */
+  }
+  /* Columna Izquierda (Imágenes/Secciones) */
+  .layout-spa-fijo > div:nth-child(1) {
+    width: 70%; /* 70% de ancho */
+  }
+  /* Columna Derecha (Detalles Card) */
+  .layout-spa-fijo > div:nth-child(2) {
+    width: 30%; /* 30% de ancho */
+  }
+}
+
+
+/* Estilo para los títulos H2/H3 de Servicios, Materiales y Reseñas */
+.titulo-seccion-spa {
+    /* Toma prestado el estilo del botón 'pop' que eliminamos */
+    display: inline-block;
+    width: auto;
+    padding: 8px 15px;
+    margin: 0; 
+    background-color: var(--accent); /* Fondo rosado claro */
+    color: var(--text);
+    border: 2px solid #000;
+    border-radius: 15px;
+    font-weight: 700;
+    box-shadow: 3px 3px 0px #000;
+    font-size: 1.5rem; /* Tamaño adecuado para un subtítulo */
+}
+
+/* 1. Contenedor de la Galería (Limita el espacio y define la cuadrícula) */
+.galeria-grid {
+    /* Muestra los elementos en una cuadrícula. */
+    display: grid; 
+    /* Crea 3 o 4 columnas de igual tamaño (adaptable) */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    /* Espacio entre las imágenes */
+    gap: 15px; 
+    /* Asegura que no se salga de la columna de la izquierda */
+    width: 100%; 
+}
+
+/* 2. Estilo de las Imágenes */
+.imagen-galeria-estilo {
+    /* Las hace llenar el espacio asignado por la cuadrícula */
+    width: 100%; 
+    /* Les da una altura fija (puedes ajustarla) */
+    height: 150px; 
+    /* Asegura que la imagen no se distorsione al ajustarse al área */
+    object-fit: cover; 
+    /* Añade un borde o sombra para que se vean mejor (Opcional) */
+    border-radius: 8px; 
+}
+
+/* === 5. Estilos Personalizados - Gestión de Materiales (Aesthetic) === */
+
+/* Estilo para los mensajes de alerta/éxito */
+.mensaje-alerta {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 2px solid #000;
+    font-weight: 600;
+    box-shadow: 2px 2px 0px #000;
+}
+#mensaje.error {
+    background-color: #fdd; /* Rosa pálido error */
+}
+#mensaje.exito {
+    background-color: #dfffdf; /* Verde pálido éxito */
+}
+
+/* Contenedor principal de la tabla (Imita una tarjeta grande) */
+.card-materiales-listado {
+    background-color: var(--card); /* Fondo blanco */
+    border: 3px solid #000; 
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 6px 6px 0px var(--accent); /* Sombra con color accent */
+    margin-top: 20px;
+}
+
+/* Estilo de la Tabla (Eliminamos el borde simple 'border="1"') */
+.tabla-gestion-aestethic {
+    width: 100%;
+    border-collapse: collapse; /* Quitamos bordes dobles */
+}
+
+.tabla-gestion-aestethic th {
+    padding: 12px 8px;
+    text-align: left;
+    background-color: var(--accent-2); /* Fondo de encabezado rosado */
+    color: var(--text);
+    border-bottom: 2px solid #000;
+}
+
+.tabla-gestion-aestethic td {
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px dashed var(--muted); /* Línea punteada suave */
+}
+
+/* Fila para que se vea más aesthetic */
+.tabla-gestion-aestethic tbody tr:hover {
+    background-color: #fff7fa; /* Resaltar al pasar el ratón */
+}
+
+/* Estilo de los botones de acción (Editar/Eliminar) */
+.tabla-gestion-aestethic button {
+    width: auto;
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0 4px;
+    font-size: 14px;
+    border-radius: 6px;
+    /* Resetear el estilo global de botón que es 100% ancho */
+}
+.tabla-gestion-aestethic .editar {
+    background-color: #f7e6c7; /* Amarillo suave */
+}
+.tabla-gestion-aestethic .eliminar {
+    background-color: #f6c7c7; /* Rojo suave */
+}
+
+/* Estilos de Botones de Formulario */
+.btn-accent {
+    width: auto;
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--text);
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    transition: box-shadow 0.1s;
+}
+.btn-accent:hover {
+    box-shadow: 4px 4px 0px #000;
+}
+
+.btn-guardar {
+    background-color: #d4f7d4; /* Verde muy suave */
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+}
+.btn-cancelar {
+    background-color: #f0f0f0; /* Gris suave */
+    border: 2px solid #000;
+}
+
+/* Estilo para los inputs del formulario */
+#formMaterial input {
+    border: 2px solid #000;
+    border-radius: 8px;
+    box-shadow: 1px 1px 0px #000;
+    padding: 10px;
+}
+
+/* Añadir esta regla al CSS para que los textareas se vean como los inputs */
+#formServicio textarea {
+    border: 2px solid #000;
+    border-radius: 8px;
+    box-shadow: 1px 1px 0px #000;
+    padding: 10px;
+    resize: vertical; /* Permite redimensionar verticalmente */
+    width: 100%; /* Asegura que tome el ancho del contenedor */
+}
+
+/* === 6. Estilos Personalizados - Reseñas (Aesthetic) === */
+
+/* Contenedor principal para listados de reseñas */
+.resenas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Estilo de Tarjeta Individual de Reseña */
+.resena-card {
+    background-color: var(--card); 
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 4px 4px 0px var(--accent-2); /* Sombra suave con color */
+    display: flex;
+    flex-direction: column;
+}
+
+.resena-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.resena-score {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent); /* Resalta la calificación */
+    border: 2px dashed var(--muted);
+    border-radius: 8px;
+    padding: 5px 10px;
+    width: fit-content;
+    margin-bottom: 10px;
+}
+
+.resena-text {
+    flex-grow: 1; /* Permite que el comentario ocupe el espacio extra */
+    margin-top: 5px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.resena-user {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.resena-actions button {
+    /* Estilos para los botones Editar/Eliminar dentro de la reseña */
+    width: auto;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid #000;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 1px 1px 0px #000;
+}
+
+.resena-actions button:hover {
+    box-shadow: 2px 2px 0px #000;
+}
+
+/* Estilo del formulario de edición en línea (resenas.js) */
+.resena-edit-form input, .resena-edit-form select, .resena-edit-form textarea {
+    /* Usamos los estilos de input/select ya definidos en la sección 5 */
+    margin-bottom: 10px;
+}
+
+/* Estilo de los controles de filtro */
+.card-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f7f7f7;
+    padding: 15px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.card-controls label {
+    font-weight: 600;
+}
+
+
+/* === 1. Variables Globales (Asegúrate de que estas sean las primeras) === */
+:root{
+  --bg: #fff7fb;
+  --card: #fff;
+  --accent: #f6c7d6; /* Rosa pastel */
+  --accent-2: #ffd6e8; /* Rosa más claro */
+  --text: #2b2b2b;
+  --muted: #777;
+  --round: 12px;
+}
+/* ... (Resto de resets y estilos base) ... */
+
+
+/* === 2. Estilos de la Cabecera (Aesthetic) === */
+
+.site-header {
+    /* Mantener el gradiente, pero asegurar el borde inferior grueso */
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-bottom: 3px solid #000; /* Borde inferior grueso y definido */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    padding: 10px 0;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Título de Marca (Brand) Aesthetic */
+.brand-title-aesthetic {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800; /* Más peso para que destaque */
+    color: var(--text);
+}
+
+.brand a {
+    text-decoration: none; /* Quitar subrayado del enlace del logo */
+}
+
+/* Navegación Principal */
+.main-nav-aesthetic {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre elementos */
+}
+
+/* Estilo para los enlaces de navegación */
+.main-nav-aesthetic .nav-link {
+    text-decoration: none;
+    color: var(--text);
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+
+.main-nav-aesthetic .nav-link:hover {
+    background-color: var(--accent); /* Resaltar al pasar el mouse */
+}
+
+/* Estilo para los botones de acción (Iniciar Sesión / Cerrar Sesión) */
+.main-nav-aesthetic .nav-action-btn {
+    /* Sobrescribir estilos globales si es necesario */
+    width: auto;
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Estilo específico para el botón de Cerrar Sesión (usamos el estilo btn-cancelar) */
+.main-nav-aesthetic .btn-cancelar {
+    background-color: #f0f0f0; /* Asegurar que el fondo sea el de cancelar */
+}
+
+/* Pie de Página (Footer) Aesthetic */
+.site-footer {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted);
+    background-color: var(--accent-2); /* Fondo suave */
+    border-top: 2px solid #000; /* Borde superior aesthetic */
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+/* === 2. Estilos de la Cabecera (Aesthetic) === */
+
+.site-header {
+    /* Mantener el gradiente, pero asegurar el borde inferior grueso */
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-bottom: 3px solid #000; /* Borde inferior grueso y definido */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    padding: 10px 0;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Título de Marca (Brand) Aesthetic */
+.brand-title-aesthetic {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800; /* Más peso para que destaque */
+    color: var(--text);
+}
+
+.brand a {
+    text-decoration: none; /* Quitar subrayado del enlace del logo */
+}
+
+/* Navegación Principal */
+.main-nav-aesthetic {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre elementos */
+}
+
+/* 🚨 ESTOS SON LOS ESTILOS CLAVE PARA "ENCERRAR" LOS ENLACES 🚨 */
+.main-nav-aesthetic .nav-link {
+    text-decoration: none;
+    color: var(--text);
+    padding: 6px 10px; /* Padding para que parezca botón */
+    border-radius: 8px;
+    
+    /* === Estilo Aesthetic de Botón (Enclosed Look) === */
+    background-color: var(--accent-2); /* Fondo rosa claro, similar al acento */
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    transition: box-shadow 0.1s, background-color 0.2s;
+    font-weight: 600;
+}
+
+.main-nav-aesthetic .nav-link:hover {
+    background-color: var(--accent); /* Color más oscuro al pasar el mouse */
+    box-shadow: 3px 3px 0px #000; /* Efecto pop más grande */
+}
+
+/* Estilo para los botones de acción (Iniciar Sesión / Cerrar Sesión) */
+.main-nav-aesthetic .nav-action-btn {
+    /* Mantiene el estilo de botón principal (btn-accent) que es ligeramente más grande */
+    width: auto;
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Estilo específico para el botón de Cerrar Sesión (usamos el estilo btn-cancelar) */
+.main-nav-aesthetic .btn-cancelar {
+    background-color: #f0f0f0; 
+}
+
+/* Pie de Página (Footer) Aesthetic */
+.site-footer {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted);
+    background-color: var(--accent-2); /* Fondo suave */
+    border-top: 2px solid #000; /* Borde superior aesthetic */
+    margin-top: 40px;
+    font-size: 0.9rem;
+}

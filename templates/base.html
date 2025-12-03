@@ -1,46 +1,40 @@
- <!-- templates/base.html -->
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Beauty Nails - {% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Beauty Nails - {% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <a href="/"><h1>Beauty Nails</h1></a>
-        <p class="tag">Spa - Fontibón</p>
-      </div>
-      <nav>
-        <a href="/spas">Spas</a>
-        <a href="/servicios">Servicios</a>
-        <a href="/materiales">Materiales</a>
-        <a href="/resenas">Reseñas</a>
-        <a href="/reportes">Reportes</a>
-        <a href="/usuarios" id="link-usuarios" style="display:none;">Usuarios</a>
-        <a id="nav-login" href="/login">Iniciar sesión</a>
-        <button id="btn-logout" class="hidden">Cerrar sesión</button>
-      </nav>
-    </div>
-  </header>
+<header class="site-header">
+<div class="container header-inner">
+<div class="brand">
+<a href="/"><h1 class="brand-title-aesthetic">💅 Beauty Nails</h1></a>
+<p class="tag">Spa - Fontibón</p>
+</div>
+<nav class="main-nav-aesthetic">
+<a href="/spas" class="nav-link">Spas</a>
+<a href="/servicios" class="nav-link">Servicios</a>
+<a href="/materiales" class="nav-link">Materiales</a>
+<a href="/resenas" class="nav-link">Reseñas</a>
+<a href="/reportes" class="nav-link">Reportes</a>
+<a href="/usuarios" id="link-usuarios" class="nav-link hidden-admin">Usuarios</a>
+<a id="nav-login" href="/login" class="btn-accent nav-action-btn">Iniciar sesión</a>
+<button id="btn-logout" class="btn-accent btn-cancelar hidden nav-action-btn">Cerrar sesión</button>
+</nav>
+</div>
+</header>
 
-  <main class="container">
-    {% block content %}{% endblock %}
-  </main>
+<main class="container">{% block content %}{% endblock %}</main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Beauty Nails - Fontibón</p>
-    </div>
-  </footer>
+<footer class="site-footer">
+<div class="container">
+<p>© 2025 Beauty Nails</p>
+</div>
+</footer>
 
-  <script>
-  </script>
-  
-  <script src="/static/js/app.js"></script>
-  {% block scripts %}{% endblock %}
+<script src="/static/js/app.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

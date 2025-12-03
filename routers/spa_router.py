@@ -1,11 +1,13 @@
 # routers/spa_router.py
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlmodel import Session, select
 from core.db import get_session
-from models.models import Spa, Usuario
-from models.schemas import SpaCreate, SpaRead, SpaUpdate, SpaDetalleRead
+from models.models import Spa, Usuario, SpaImage
+from models.schemas import SpaCreate, SpaRead, SpaUpdate, SpaDetalleRead, ImageOut
 from core.auth import get_current_user, admin_spa_required, admin_principal_required
 from datetime import date
+import os
+import shutil
 
 router = APIRouter(
     prefix="/spas",
@@ -100,7 +102,6 @@ def obtener_spa(
                 "nombre": assoc.material.nombre,
                 "tipo": assoc.material.tipo
             })
-
     # Obtener reseñas
     resenas = []
     for r in spa.resenas:
@@ -114,6 +115,18 @@ def obtener_spa(
                 "usuario_nombre": r.usuario.nombre if r.usuario else None,
             })
 
+    imagenes = []
+    # Asume que 'spa.imagenes' es la relación que definiste en tu modelo Spa
+    # que contiene objetos con los atributos 'url' y 'es_principal'.
+    if hasattr(spa, 'imagenes'):
+        for img in spa.imagenes:
+            imagenes.append({
+                "id": img.id,         # <-- ¡NUEVO!
+                "spa_id": img.spa_id, # <-- ¡NUEVO!
+                "url": img.url,
+                "es_principal": img.es_principal,
+            })
+
     # Devolver todo
     return {
         "id": spa.id,
@@ -125,7 +138,8 @@ def obtener_spa(
         "ultima_actualizacion": spa.ultima_actualizacion,
         "servicios": servicios,
         "materiales": materiales,
-        "resenas": resenas
+        "resenas": resenas,
+        "imagenes": imagenes
     }
 
 
@@ -212,3 +226,59 @@ def restore_spa(
     session.refresh(spa)
 
     return {"message": f"Spa '{spa.nombre}' restaurado correctamente."}
+
+
+# routers/spa_router.py (al final)
+
+# -------------------- SUBIR IMAGEN PARA UN SPA --------------------
+@router.post("/{spa_id}/imagenes", response_model=ImageOut)
+def subir_imagen_spa(
+    spa_id: int,
+    file: UploadFile = File(..., description="El archivo de imagen a subir"),
+    es_principal: bool = False,
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(get_current_user)
+):
+    # 1. Verificar existencia y permisos del Spa
+    spa = session.get(Spa, spa_id)
+    if not spa or not spa.activo:
+        raise HTTPException(status_code=404, detail="Spa no encontrado o inactivo")
+
+    # Autorización: Solo el administrador del spa o el admin principal pueden subir imágenes.
+    if current_user.rol not in ["admin_principal"] and spa.admin_spa_id != current_user.id:
+        raise HTTPException(status_code=403, detail="No tienes permisos para modificar este Spa.")
+
+    # 2. Configuración y Guardado Físico del Archivo
+    UPLOAD_DIR = f"./static/img/spas/{spa_id}" # Ruta basada en el ID del Spa
+    os.makedirs(UPLOAD_DIR, exist_ok=True) # Crea la carpeta si no existe
+
+    # Generar un nombre de archivo seguro y único
+    file_extension = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
+    safe_filename = f"{date.today().strftime('%Y%m%d')}_{file.filename.replace(' ', '_')}_{current_user.id}.{file_extension}"
+    file_path = os.path.join(UPLOAD_DIR, safe_filename)
+    
+    try:
+        # Guardar el archivo en el disco usando shutil
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer) 
+            
+        # Determinar la URL pública
+        # La URL debe ser relativa al directorio 'static' para que el frontend la use.
+        public_url = f"/static/img/spas/{spa_id}/{safe_filename}"
+
+    except Exception as e:
+        # Manejar errores de escritura de disco
+        raise HTTPException(status_code=500, detail=f"Error al guardar el archivo: {e}")
+
+    # 3. Registrar la URL en la Base de Datos
+    nueva_imagen = SpaImage(
+        spa_id=spa_id,
+        url=public_url,
+        es_principal=es_principal 
+    )
+
+    session.add(nueva_imagen)
+    session.commit()
+    session.refresh(nueva_imagen)
+
+    return nueva_imagen

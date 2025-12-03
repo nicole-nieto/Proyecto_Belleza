@@ -4,40 +4,37 @@
 {% block content %}
 <div class="p-4">
 
+    <!-- Buscador y acciones admin -->
     <div class="flex justify-between mb-4 gap-4">
 
         <div class="flex gap-2 w-2/3">
             <input id="inputBuscar" type="text" placeholder="Buscar por nombre"
-                   class="border p-2 w-full" oninput="buscarSpas()">
+                   class="border p-2 w-full rounded" oninput="buscarSpas()">
 
             <input id="inputZona" type="text" placeholder="Zona"
-                   class="border p-2 w-full" oninput="buscarSpas()">
+                   class="border p-2 w-full rounded" oninput="buscarSpas()">
         </div>
 
-        <div id="adminActions" class="flex justify-end items-center w-1/3">
-            <button id="btnCrearSpa"
-                    class="hidden bg-green-600 text-white px-3 py-1 rounded"
-                    onclick="abrirCrearSpa()">
-                Crear Spa
-            </button>
-        </div>
+        <div id="adminActions" class="flex justify-end items-center w-1/3"></div>
     </div>
 
-    <div id="spaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <!-- Lista de Spas -->
+    <div id="spaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Cada spa se cargará aquí mediante JS dentro de un “card” -->
+    </div>
 
 </div>
 
-
 <!-- MODAL CREAR / EDITAR SPA -->
 <div id="modalSpa" class="hidden fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-    <div class="bg-white p-6 rounded w-96 shadow-lg">
+    <div class="modal-content">
         
         <h2 id="modalTitulo" class="text-xl font-bold mb-3">Crear Spa</h2>
 
-        <input id="spaNombre" class="border p-2 w-full mb-2" placeholder="Nombre">
-        <input id="spaDireccion" class="border p-2 w-full mb-2" placeholder="Dirección">
-        <input id="spaZona" class="border p-2 w-full mb-2" placeholder="Zona">
-        <input id="spaHorario" class="border p-2 w-full mb-2" placeholder="Horario">
+        <input id="spaNombre" class="border p-2 w-full mb-2 rounded" placeholder="Nombre">
+        <input id="spaDireccion" class="border p-2 w-full mb-2 rounded" placeholder="Dirección">
+        <input id="spaZona" class="border p-2 w-full mb-2 rounded" placeholder="Zona">
+        <input id="spaHorario" class="border p-2 w-full mb-2 rounded" placeholder="Horario">
 
         <div class="flex justify-end gap-2 mt-4">
             <button onclick="cerrarModal()" class="px-3 py-1 bg-gray-600 text-white rounded">Cancelar</button>
@@ -47,9 +44,7 @@
     </div>
 </div>
 
-
 <script src="/static/js/config.js"></script>
 <script src="/static/js/app.js"></script>
 <script src="/static/js/spas.js"></script>
 {% endblock %}
-

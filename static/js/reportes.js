@@ -47,7 +47,7 @@ function generarTop5(data) {
         .sort((a, b) => b.promedio - a.promedio)
         .slice(0, 3);
 
-    const list = document.getElementById("top5");
+    const list = document.getElementById("top3");
     list.innerHTML = "";
 
     sorted.forEach(item => {
