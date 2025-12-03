@@ -7,22 +7,10 @@ from core.auth import get_current_user
 
 router = APIRouter(prefix="/resenas", tags=["Reseñas"])
 
-# ==========================
-# FUNCIÓN PARA RE-CALCULAR
-# ==========================
-def recalcular_calificacion_spa(spa: Spa, session: Session):
-    reseñas_activas = [r.calificacion for r in spa.resenas if r.activo]
 
-    if not reseñas_activas:
-        spa.calificacion_promedio = 0
-    else:
-        spa.calificacion_promedio = sum(reseñas_activas) / len(reseñas_activas)
-
-    session.add(spa)
-
-# ==============================
-# UTILIDAD: anexar nombres
-# ==============================
+# ------------------------------------------------
+# UTILIDAD: agregar spa_nombre y usuario_nombre
+# ------------------------------------------------
 def anexar_nombres(resena: Resena, session: Session) -> ResenaRead:
     spa = session.get(Spa, resena.spa_id)
     usuario = session.get(Usuario, resena.usuario_id)
@@ -38,21 +26,27 @@ def anexar_nombres(resena: Resena, session: Session) -> ResenaRead:
         usuario_nombre=usuario.nombre if usuario else None,
     )
 
-# ==============================
+
+# ------------------------------------------------
 # CREAR RESEÑA
-# ==============================
+# ------------------------------------------------
 @router.post("/", response_model=ResenaRead)
 def crear_resena(
     resena_data: ResenaCreate,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):
+
+    # Solo usuarios normales
     if current_user.rol != "usuario":
         raise HTTPException(403, "Solo los usuarios pueden crear reseñas")
 
     spa = session.get(Spa, resena_data.spa_id)
     if not spa or not spa.activo:
         raise HTTPException(404, "Spa no encontrado o inactivo")
+
+    if not (1 <= resena_data.calificacion <= 5):
+        raise HTTPException(400, "La calificación debe estar entre 1 y 5")
 
     nueva = Resena(
         calificacion=resena_data.calificacion,
@@ -65,14 +59,53 @@ def crear_resena(
     session.commit()
     session.refresh(nueva)
 
-    recalcular_calificacion_spa(spa, session)
-    session.commit()
-
     return anexar_nombres(nueva, session)
 
-# ==============================
+
+# ------------------------------------------------
+# LISTAR RESEÑAS POR SPA (ADMIN / USUARIO)
+# ------------------------------------------------
+@router.get("/por_spa/{spa_id}", response_model=list[ResenaRead])
+def listar_resenas_por_spa(
+    spa_id: int,
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(get_current_user)
+):
+
+    spa = session.get(Spa, spa_id)
+    if not spa or not spa.activo:
+        raise HTTPException(404, "Spa no encontrado o inactivo")
+
+    resenas = session.exec(
+        select(Resena)
+        .where(Resena.spa_id == spa_id)
+        .where(Resena.activo == True)
+    ).all()
+
+    return [anexar_nombres(r, session) for r in resenas]
+
+
+# ------------------------------------------------
+# LISTAR MIS RESEÑAS (USUARIO)
+# ------------------------------------------------
+@router.get("/mias", response_model=list[ResenaRead])
+def listar_mis_resenas(
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(get_current_user)
+):
+
+    resenas = session.exec(
+        select(Resena)
+        .where(Resena.usuario_id == current_user.id)
+        .where(Resena.activo == True)
+    ).all()
+
+    return [anexar_nombres(r, session) for r in resenas]
+
+
+# ------------------------------------------------
 # EDITAR RESEÑA
-# ==============================
+# ------------------------------------------------
 @router.patch("/{resena_id}", response_model=ResenaRead)
 def actualizar_resena(
     resena_id: int,
@@ -80,48 +113,67 @@ def actualizar_resena(
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):
+
     resena = session.get(Resena, resena_id)
     if not resena or not resena.activo:
         raise HTTPException(404, "Reseña no encontrada o inactiva")
 
+    # Permisos corregidos
     if current_user.rol == "usuario" and resena.usuario_id != current_user.id:
         raise HTTPException(403, "No puedes editar reseñas de otros usuarios")
 
-    resena.calificacion = data.calificacion
+    if not (1 <= data.calificacion <= 5):
+        raise HTTPException(400, "La calificación debe estar entre 1 y 5")
+
     resena.comentario = data.comentario
+    resena.calificacion = data.calificacion
     resena.spa_id = data.spa_id
 
     session.add(resena)
-    spa = session.get(Spa, resena.spa_id)
-
-    recalcular_calificacion_spa(spa, session)
     session.commit()
     session.refresh(resena)
 
     return anexar_nombres(resena, session)
 
-# ==============================
+
+# ------------------------------------------------
 # ELIMINAR RESEÑA (LÓGICO)
-# ==============================
+# ------------------------------------------------
 @router.delete("/{resena_id}")
 def eliminar_resena(
     resena_id: int,
     session: Session = Depends(get_session),
     current_user: Usuario = Depends(get_current_user)
 ):
+
     resena = session.get(Resena, resena_id)
     if not resena:
         raise HTTPException(404, "Reseña no encontrada")
 
+    # Permisos corregidos
     if current_user.rol == "usuario" and resena.usuario_id != current_user.id:
         raise HTTPException(403, "No puedes eliminar reseñas de otros usuarios")
 
     resena.activo = False
     session.add(resena)
-
-    spa = session.get(Spa, resena.spa_id)
-    recalcular_calificacion_spa(spa, session)
-
     session.commit()
 
-    return {"message": "Reseña eliminada correctamente"}
+    return {"message": f"Reseña #{resena.id} fue desactivada correctamente."}
+
+
+# ------------------------------------------------
+# LISTAR TODAS LAS RESEÑAS (ADMIN)
+# ------------------------------------------------
+@router.get("/todas_admin", response_model=list[ResenaRead])
+def listar_todas_admin(
+    session: Session = Depends(get_session),
+    current_user: Usuario = Depends(get_current_user)
+):
+
+    if current_user.rol not in ["admin", "admin_principal"]:
+        raise HTTPException(403, "Solo administradores pueden ver todas las reseñas")
+
+    resenas = session.exec(select(Resena)).all()
+
+
+    return [anexar_nombres(r, session) for r in resenas]

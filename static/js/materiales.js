@@ -90,13 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Solo mostrar botones si rol admin (lo determina el servidor, pero aquí UI)
       const rol = window.getRol();
-      const esAdmin = (rol === "admin_principal" || rol === "admin_spa");
+      const esAdmin = (rol === "admin_principal");
 
       tr.innerHTML = `
         <td>${m.id}</td>
         <td>${escapeHtml(nombre)}</td>
         <td>${escapeHtml(tipo)}</td>
-        <td>${esAdmin ? `<button class="editar" data-id="${m.id}">✏️</button> <button class="eliminar" data-id="${m.id}">🗑️</button>` : "-"}</td>
+        <td class="col-acciones">${esAdmin ? `<button class="editar" data-id="${m.id}">✏️</button> <button class="eliminar" data-id="${m.id}">🗑️</button>` : ""}</td>
       `;
 
       tabla.appendChild(tr);
@@ -122,30 +122,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------
   // Cargar
   // -----------------------
-  async function cargarMateriales() {
-    showMessage("Cargando materiales...", "info");
+async function cargarMateriales() {
+  showMessage("Cargando materiales...", "info");
 
-    // Ocultar acciones admin por defecto, se mostrará si rol indica
-    accionesAdmin.style.display = "none";
+  try {
+    const materiales = await apiJSON("/materiales/", { method: "GET" });
 
-    try {
-      const materiales = await apiJSON("/materiales/", { method: "GET" });
+    // mostrar tabla
+    renderTabla(materiales);
 
-      // Si el usuario no está autenticado, window.apiFetch lo habrá manejado
-      // mostrar tabla
-      renderTabla(materiales);
-
-      // mostrar acciones admin si rol local lo permite
-      const rol = window.getRol();
-      const esAdmin = (rol === "admin_principal" || rol === "admin_spa");
-      accionesAdmin.style.display = esAdmin ? "block" : "none";
-
-      showMessage("", "");
-    } catch (err) {
-      // apiJSON ya mostró mensajes adecuados
-      console.error("cargarMateriales:", err);
+    // mostrar acciones admin solo para admin_principal
+    const rol = window.getRol();
+    if (rol !== "admin_principal") {
+        document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "none");
+    } else {
+        document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "");
     }
+
+    showMessage("", "");
+  } catch (err) {
+    console.error("cargarMateriales:", err);
   }
+}
+
 
   // -----------------------
   // Crear / Editar
