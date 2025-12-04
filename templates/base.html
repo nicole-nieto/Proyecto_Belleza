@@ -13,7 +13,8 @@
 <a href="/"><h1 class="brand-title-aesthetic">💅 Beauty Nails</h1></a>
 <p class="tag">Spa - Fontibón</p>
 </div>
-<nav class="main-nav-aesthetic">
+
+<nav class="main-nav-aesthetic nav-responsive">
 <a href="/spas" class="nav-link">Spas</a>
 <a href="/servicios" class="nav-link">Servicios</a>
 <a href="/materiales" class="nav-link">Materiales</a>
@@ -23,10 +24,13 @@
 <a id="nav-login" href="/login" class="btn-accent nav-action-btn">Iniciar sesión</a>
 <button id="btn-logout" class="btn-accent btn-cancelar hidden nav-action-btn">Cerrar sesión</button>
 </nav>
+
 </div>
 </header>
 
-<main class="container">{% block content %}{% endblock %}</main>
+<main class="container">
+{% block content %}{% endblock %}
+</main>
 
 <footer class="site-footer">
 <div class="container">

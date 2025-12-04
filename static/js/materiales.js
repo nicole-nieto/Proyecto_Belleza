@@ -123,26 +123,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cargar
   // -----------------------
 async function cargarMateriales() {
-  showMessage("Cargando materiales...", "info");
+    showMessage("Cargando materiales...", "info");
 
-  try {
-    const materiales = await apiJSON("/materiales/", { method: "GET" });
+    try {
+        const materiales = await apiJSON("/materiales/", { method: "GET" });
 
-    // mostrar tabla
-    renderTabla(materiales);
+        // mostrar tabla
+        renderTabla(materiales);
 
-    // mostrar acciones admin solo para admin_principal
-    const rol = window.getRol();
-    if (rol !== "admin_principal") {
-        document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "none");
-    } else {
-        document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "");
+        // mostrar acciones admin solo para admin_principal (CORREGIDO)
+        const rol = window.getRol();
+        
+        if (rol === "admin_principal") { // <--- ✅ AHORA VERIFICAMOS SI ES ADMIN
+            // Mostrar tanto el botón de crear como las columnas de acción
+            accionesAdmin.style.display = "block"; // 🎯 ESTA ES LA LÍNEA CLAVE
+            document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "");
+        } else {
+            // Si no es admin, ocultamos ambos elementos
+            accionesAdmin.style.display = "none";
+            document.querySelectorAll(".col-acciones").forEach(el => el.style.display = "none");
+        }
+
+        showMessage("", "");
+    } catch (err) {
+        console.error("cargarMateriales:", err);
     }
-
-    showMessage("", "");
-  } catch (err) {
-    console.error("cargarMateriales:", err);
-  }
 }
 
 
