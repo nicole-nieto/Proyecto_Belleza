@@ -43,16 +43,16 @@ El proyecto integra datos recolectados desde redes sociales, directorios locales
 
 🛣️ ENDPOINTS
 
-
-POST    /spas/                     → Crear spa
-GET     /spas/                     → Listar spas
-GET     /spas/{spa_id}             → Obtener spa
-PATCH   /spas/{spa_id}             → Actualizar spa
-DELETE  /spas/{spa_id}             → Desactivar spa
-GET     /spas/buscar/              → Buscar spa por filtros
-PATCH   /spas/{spa_id}/restore     → Restaurar spa
-POST    /spas/{spa_id}/imagenes    → Subir imagen de spa
-
+| Método     | Endpoint                  | Descripción            |
+| ---------- | ------------------------- | ---------------------- |
+| **POST**   | `/spas/`                  | Crear spa              |
+| **GET**    | `/spas/`                  | Listar spas            |
+| **GET**    | `/spas/{spa_id}`          | Obtener spa            |
+| **PATCH**  | `/spas/{spa_id}`          | Actualizar spa         |
+| **DELETE** | `/spas/{spa_id}`          | Desactivar spa         |
+| **GET**    | `/spas/buscar/`           | Buscar spa por filtros |
+| **PATCH**  | `/spas/{spa_id}/restore`  | Restaurar spa          |
+| **POST**   | `/spas/{spa_id}/imagenes` | Subir imagen de spa    |
 
 /materiales
 POST    /                         → Crear material
