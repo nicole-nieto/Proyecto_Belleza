@@ -553,3 +553,38 @@ input[type="text"] {
     margin-top: 40px;
     font-size: 0.9rem;
 }
+
+/* ================================
+   NAV RESPONSIVE
+================================ */
+.nav-responsive {
+    display: flex;
+    flex-wrap: wrap;        /* 🔥 permite que los enlaces bajen a otra línea */
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-responsive .nav-link,
+.nav-responsive .nav-action-btn {
+    white-space: nowrap;    /* no deja que el texto se parta feo */
+}
+
+/* Ajustes extra en móviles */
+@media (max-width: 600px) {
+    .nav-responsive {
+        flex-direction: row;
+        gap: 6px;
+        text-align: center;
+    }
+
+    .brand-title-aesthetic {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .tag {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+}
