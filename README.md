@@ -54,47 +54,55 @@ El proyecto integra datos recolectados desde redes sociales, directorios locales
 | **PATCH**  | `/spas/{spa_id}/restore`  | Restaurar spa          |
 | **POST**   | `/spas/{spa_id}/imagenes` | Subir imagen de spa    |
 
-/materiales
-POST    /                         → Crear material
-GET     /                         → Listar materiales
-POST    /asociar/{spa_id}/{material_id} → Asociar material a spa
-PATCH   /{material_id}            → Actualizar material
-DELETE  /{material_id}            → Eliminar material
-GET     /por_spa/{spa_id}         → Listar materiales por spa
+| Método     | Endpoint                                     | Descripción               |
+| ---------- | -------------------------------------------- | ------------------------- |
+| **POST**   | `/materiales/`                               | Crear material            |
+| **GET**    | `/materiales/`                               | Listar materiales         |
+| **POST**   | `/materiales/asociar/{spa_id}/{material_id}` | Asociar material a spa    |
+| **PATCH**  | `/materiales/{material_id}`                  | Actualizar material       |
+| **DELETE** | `/materiales/{material_id}`                  | Eliminar material         |
+| **GET**    | `/materiales/por_spa/{spa_id}`               | Listar materiales por spa |
 
-/servicios
-POST    /                         → Crear servicio base (admin_principal)
-GET     /                         → Listar servicios globales
-POST    /asociar/{spa_id}/{servicio_id} → Asociar servicio a spa
-GET     /por_spa/{spa_id}         → Listar servicios de un spa
-PATCH   /{servicio_id}            → Actualizar servicio base
-DELETE  /{servicio_id}            → Eliminar servicio
 
-/auth
-POST    /register                 → Registrar usuario (rol: usuario)
-POST    /login                    → Login con JWT
-POST    /setup_admin              → Crear admin principal (solo 1 vez)
+| Método     | Endpoint                                    | Descripción                                |
+| ---------- | ------------------------------------------- | ------------------------------------------ |
+| **POST**   | `/servicios/`                               | Crear servicio base (solo admin_principal) |
+| **GET**    | `/servicios/`                               | Listar servicios globales                  |
+| **POST**   | `/servicios/asociar/{spa_id}/{servicio_id}` | Asociar servicio a spa                     |
+| **GET**    | `/servicios/por_spa/{spa_id}`               | Listar servicios de un spa                 |
+| **PATCH**  | `/servicios/{servicio_id}`                  | Actualizar servicio base                   |
+| **DELETE** | `/servicios/{servicio_id}`                  | Eliminar servicio                          |
 
-/usuarios
-GET     /perfil                           → Ver perfil (usuario normal)
-POST    /crear_admin_spa                  → Crear admin de spa
-GET     /                                  → Listar usuarios
-GET     /{usuario_id}                     → Obtener usuario por ID
-PATCH   /desactivar/{usuario_id}          → Desactivar usuario
-PATCH   /activar/{usuario_id}             → Activar usuario
 
-/resenas
-POST    /                                  → Crear reseña
-GET     /por_spa/{spa_id}                  → Listar reseñas por spa
-GET     /mias                               → Listar mis reseñas
-PATCH   /{resena_id}                       → Actualizar reseña
-DELETE  /{resena_id}                       → Eliminación lógica
-GET     /todas_admin                       → Listar todas (admins)
+| Método   | Endpoint            | Descripción                        |
+| -------- | ------------------- | ---------------------------------- |
+| **POST** | `/auth/register`    | Registrar usuario (rol: usuario)   |
+| **POST** | `/auth/login`       | Login con JWT                      |
+| **POST** | `/auth/setup_admin` | Crear admin principal (solo 1 vez) |
 
-/reportes
-GET     /resenas_por_spa      → Total de reseñas por spa
-GET     /promedio_por_spa     → Promedio de calificaciones
+| Método    | Endpoint                            | Descripción                      |
+| --------- | ----------------------------------- | -------------------------------- |
+| **GET**   | `/usuarios/perfil`                  | Ver perfil (solo usuario normal) |
+| **POST**  | `/usuarios/crear_admin_spa`         | Crear admin de spa               |
+| **GET**   | `/usuarios/`                        | Listar usuarios                  |
+| **GET**   | `/usuarios/{usuario_id}`            | Obtener usuario por ID           |
+| **PATCH** | `/usuarios/desactivar/{usuario_id}` | Desactivar usuario               |
+| **PATCH** | `/usuarios/activar/{usuario_id}`    | Activar usuario                  |
 
+| Método     | Endpoint                    | Descripción            |
+| ---------- | --------------------------- | ---------------------- |
+| **POST**   | `/resenas/`                 | Crear reseña           |
+| **GET**    | `/resenas/por_spa/{spa_id}` | Listar reseñas por spa |
+| **GET**    | `/resenas/mias`             | Listar mis reseñas     |
+| **PATCH**  | `/resenas/{resena_id}`      | Actualizar reseña      |
+| **DELETE** | `/resenas/{resena_id}`      | Eliminación lógica     |
+| **GET**    | `/resenas/todas_admin`      | Listar todas (admins)  |
+
+
+| Método  | Endpoint                     | Descripción                        |
+| ------- | ---------------------------- | ---------------------------------- |
+| **GET** | `/reportes/resenas_por_spa`  | Total de reseñas por spa           |
+| **GET** | `/reportes/promedio_por_spa` | Promedio de calificaciones por spa |
 
 
 📁 Estructura del Proyecto
@@ -167,34 +175,34 @@ PROYECTO_BELLEZA/
 🛠️ Stack Tecnológico
 🖥️ Backend
 
-  FastAPI — Framework principal
+ - FastAPI — Framework principal
   
-  SQLModel + SQLAlchemy 2.0 — Modelado de datos
+ - SQLModel + SQLAlchemy 2.0 — Modelado de datos
   
-  Pydantic v2 — Validación
+ - Pydantic v2 — Validación
   
-  Passlib + Bcrypt — Hashing de contraseñas
+ - Passlib + Bcrypt — Hashing de contraseñas
   
-  Python-JOSE (JWT) — Autenticación
+ - Python-JOSE (JWT) — Autenticación
   
-  psycopg / psycopg2-binary — Conexión PostgreSQL
+ - psycopg / psycopg2-binary — Conexión PostgreSQL
   
-  python-multipart — Subida de archivos
+ - python-multipart — Subida de archivos
 
 🎨 Frontend
 
-  Jinja2 — Templates
+ - Jinja2 — Templates
   
-  HTML + CSS + JavaScript
+ - HTML + CSS + JavaScript
   
-  🗄️ Base de Datos
+ - 🗄️ Base de Datos
 
 PostgreSQL (Render) — Producción
   
-  ☁️ Servicios / Despliegue
+ - ☁️ Servicios / Despliegue
   
-  Render.com — Hosting backend
+ - Render.com — Hosting backend
   
-  Render PostgreSQL — Base de datos
+ - Render PostgreSQL — Base de datos
   
-  .env + pydantic-settings — Configuración segura
+ - .env + pydantic-settings — Configuración segura
