@@ -107,30 +107,30 @@ El proyecto integra datos recolectados desde redes sociales, directorios locales
 
 📁 Estructura del Proyecto
 PROYECTO_BELLEZA/
-├── core/
-│   ├── auth.py         <-- Lógica de autenticación (JWT)
-│   ├── config.py       <-- Carga de variables de entorno
-│   ├── db.py           <-- Conexión a PostgreSQL (SQLModel)
-│   └── utils.py        <-- Funciones utilitarias
-├── models/
-│   ├── models.py       <-- Definición de las clases de la DB
-│   └── schemas.py      <-- Esquemas Pydantic/SQLModel para validación
-├── routers/            <-- Controladores de Endpoints (API)
-│   ├── auth_router.py
-│   ├── spa_router.py
-│   ├── servicio_router.py
-│   ├── material_router.py
-│   ├── resena_router.py
-│   ├── usuario_router.py
-│   └── reporte_router.py
-├── static/             <-- Archivos Frontend (CSS, JS, Imágenes)
-│   ├── css/
-│   ├── img/
-│   └── js/
-├── templates/          <-- Archivos HTML (Templates Jinja)
-├── main.py             <-- Punto de entrada (FastAPI)
-├── requirements.txt
-└── README.md
+|── core/
+|├── auth.py         <-- Lógica de autenticación (JWT)
+|   ├── config.py       <-- Carga de variables de entorno
+|   ├── db.py           <-- Conexión a PostgreSQL (SQLModel)
+|   └── utils.py        <-- Funciones utilitarias
+|── models/
+|   ├── models.py       <-- Definición de las clases de la DB
+|   └── schemas.py      <-- Esquemas Pydantic/SQLModel para validación
+|── routers/            <-- Controladores de Endpoints (API)
+|   ├── auth_router.py
+|   ├── spa_router.py
+|   ├── servicio_router.py
+|   ├── material_router.py
+|   ├── resena_router.py
+|   ├── usuario_router.py
+|   └── reporte_router.py
+|── static/             <-- Archivos Frontend (CSS, JS, Imágenes)
+|   ├── css/
+|   ├── img/
+|   └── js/
+|── templates/          <-- Archivos HTML (Templates Jinja)
+|── main.py             <-- Punto de entrada (FastAPI)
+|── requirements.txt
+|── README.md
 
 
 
