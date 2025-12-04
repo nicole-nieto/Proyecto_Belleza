@@ -1,155 +1,185 @@
-Beauty Nails
+Beauty Nails — Plataforma Web de Spas de Uñas
 
-FastAPI SQLModel Supabase Python Render Postgresql
+FastAPI · SQLModel · PostgreSQL · Render · Python
 
 📖 Descripción
-El presente proyecto busca modelar y desarrollar una plataforma web que permita a las personas, principalmente mujeres, encontrar spas de uñas en el barrio laguna de la localidad de Fontibón de la ciudad de Bogotá con información clara sobre ubicación, servicios, materiales utilizados, precios, calidad y reconocimiento. El propósito no se limita únicamente a la creación de una aplicación tecnológica, sino a generar un impacto positivo en los usuarios al facilitarles el acceso a opciones de cuidado estético que contribuyan a sentirse más bonitas, seguras y cuidadas. Para ello, se emplearán fuentes abiertas, datos recolectados de redes sociales y directorios locales, complementados con un dataset propio. El proyecto se apoyará en modelos de datos estructurados y en un backend que asegure la gestión de información, además de un frontend que permita la interacción intuitiva y amigable con el usuario final. 
+
+Este proyecto desarrolla una plataforma web que permite a las personas —principalmente mujeres— encontrar spas de uñas en el barrio Laguna (Fontibón, Bogotá) con información clara sobre:
+
+Ubicación
+
+Servicios
+
+Materiales utilizados
+
+Precios
+
+Calidad y calificación
+
+El objetivo es facilitar el acceso a opciones de cuidado estético confiables, seguras y accesibles.
+El proyecto integra datos recolectados desde redes sociales, directorios locales y un dataset propio, con un backend robusto y un frontend simple y amigable.
 
 ✨ Características Principales
-🏠 Interfaz Web Moderna: Templates con CSS y navegación intuitiva
-📱 API RESTful Completa: Endpoints para todas las operaciones CRUD
-🖼️ Gestión de Imágenes: Subida y almacenamiento en postgres
 
-Diagrama de clases
+🏠 Interfaz Web Moderna: HTML, CSS y templates Jinja2
+
+📱 API REST Completa: CRUD para modelos
+
+⭐ Sistema de Calificaciones: Usuarios dejan reseñas reales
+
+🖼️ Gestión de Imágenes: Archivos guardados en PostgreSQL
+
+🔐 Autenticación JWT: Roles: usuario, admin_spa, admin_principal
+
+📘 Diagrama de Clases
 
 <img width="921" height="899" alt="image" src="https://github.com/user-attachments/assets/071b17aa-9cda-4cc6-a8e6-609ffd1fffc5" />
 
-ENDPOINTS
-
+🛣️ ENDPOINTS
 /spas
-│
-├── POST /spas/                     → Crear spa
-├── GET  /spas/                     → Listar spas
-├── GET  /spas/{spa_id}             → Obtener spa
-├── PATCH /spas/{spa_id}            → Actualizar spa
-├── DELETE /spas/{spa_id}           → Desactivar spa
-├── GET /spas/buscar/               → Buscar spa por filtros
-├── PATCH /spas/{spa_id}/restore    → Restaurar spa
-└── POST /spas/{spa_id}/imagenes    → Subir imagen de spa
+POST    /spas/                     → Crear spa
+GET     /spas/                     → Listar spas
+GET     /spas/{spa_id}             → Obtener spa
+PATCH   /spas/{spa_id}             → Actualizar spa
+DELETE  /spas/{spa_id}             → Desactivar spa
+GET     /spas/buscar/              → Buscar spa por filtros
+PATCH   /spas/{spa_id}/restore     → Restaurar spa
+POST    /spas/{spa_id}/imagenes    → Subir imagen de spa
 
 /materiales
- ├── POST / → crear material
- ├── GET / → listar materiales
- ├── POST /asociar/{spa_id}/{material_id} → asociar material a spa
- ├── PATCH /{material_id} → actualizar material
- ├── DELETE /{material_id} → eliminar material
- └── GET /por_spa/{spa_id} → listar materiales por spa
- 
+POST    /                         → Crear material
+GET     /                         → Listar materiales
+POST    /asociar/{spa_id}/{material_id} → Asociar material a spa
+PATCH   /{material_id}            → Actualizar material
+DELETE  /{material_id}            → Eliminar material
+GET     /por_spa/{spa_id}         → Listar materiales por spa
+
 /servicios
- ├── POST / → crear servicio base (solo admin_principal)
- ├── GET / → listar servicios globales
- ├── POST /asociar/{spa_id}/{servicio_id} → asociar servicio a un spa
- ├── GET /por_spa/{spa_id} → listar servicios de un spa
- ├── PATCH /{servicio_id} → actualizar servicio base
- └── DELETE /{servicio_id} → eliminar servicio definitivamente
- 
+POST    /                         → Crear servicio base (admin_principal)
+GET     /                         → Listar servicios globales
+POST    /asociar/{spa_id}/{servicio_id} → Asociar servicio a spa
+GET     /por_spa/{spa_id}         → Listar servicios de un spa
+PATCH   /{servicio_id}            → Actualizar servicio base
+DELETE  /{servicio_id}            → Eliminar servicio
+
 /auth
- ├── POST /register → registrar usuario (rol: usuario)
- ├── POST /login → iniciar sesión (JWT)
- └── POST /setup_admin → crear admin principal inicial (solo 1 vez)
- 
+POST    /register                 → Registrar usuario (rol: usuario)
+POST    /login                    → Login con JWT
+POST    /setup_admin              → Crear admin principal (solo 1 vez)
+
 /usuarios
- ├── GET    /perfil                         → ver perfil (solo usuario normal)
- ├── POST   /crear_admin_spa                → crear admin de spa (admin_principal)
- ├── GET    /                                → listar usuarios (admin_principal)
- ├── GET    /{usuario_id}                   → obtener usuario por ID
- ├── PATCH  /desactivar/{usuario_id}        → desactivar usuario (admin_principal)
- └── PATCH  /activar/{usuario_id}           → activar usuario (admin_principal)
- 
+GET     /perfil                           → Ver perfil (usuario normal)
+POST    /crear_admin_spa                  → Crear admin de spa
+GET     /                                  → Listar usuarios
+GET     /{usuario_id}                     → Obtener usuario por ID
+PATCH   /desactivar/{usuario_id}          → Desactivar usuario
+PATCH   /activar/{usuario_id}             → Activar usuario
+
 /resenas
- ├── POST   /                                 → crear reseña (solo usuario)
- ├── GET    /por_spa/{spa_id}                 → listar reseñas por spa
- ├── GET    /mias                              → listar mis reseñas
- ├── PATCH  /{resena_id}                      → actualizar reseña
- ├── DELETE /{resena_id}                      → eliminar reseña (lógico)
- └── GET    /todas_admin                      → listar todas (admin / admin_principal)
- 
+POST    /                                  → Crear reseña
+GET     /por_spa/{spa_id}                  → Listar reseñas por spa
+GET     /mias                               → Listar mis reseñas
+PATCH   /{resena_id}                       → Actualizar reseña
+DELETE  /{resena_id}                       → Eliminación lógica
+GET     /todas_admin                       → Listar todas (admins)
+
 /reportes
- ├── GET  /resenas_por_spa        → cantidad de reseñas agrupadas por spa
- └── GET  /promedio_por_spa       → promedio de calificaciones por spa
+GET     /resenas_por_spa      → Total de reseñas por spa
+GET     /promedio_por_spa     → Promedio de calificaciones
 
-ESTRUCTURA DEL PROYECTO
+📁 Estructura del Proyecto
 PROYECTO_BELLEZA/
-├── 📂 core/                     # Núcleo del sistema
-│   ├── auth.py                 # Lógica de autenticación (JWT, hashing)
-│   ├── config.py               # Configuraciones globales
-│   ├── db.py                   # Conexión y sesión con la base de datos
-│   └── utils.py                # Funciones de utilidad generales
+├── core/
+│   ├── auth.py
+│   ├── config.py
+│   ├── db.py
+│   └── utils.py
 │
-├── 📂 models/                   # Modelos de datos
-│   ├── models.py               # Modelos SQLModel 
-│   └── schemas.py              # Esquemas Pydantic (Request/Response)
+├── models/
+│   ├── models.py
+│   └── schemas.py
 │
-├── 📂 routers/                  # endpoints de la API
-├── 📂 static/                   # Archivos estáticos del frontend
-│   ├── 📂 css/
-│   │   └── style.css           # Estilos globales de la app
-│   ├── 📂 img/                 # Imágenes (spas, logos, etc)
-│   └── 📂 js/                  # Lógica frontend
-├── 📂 templates/               # Templates HTML (Jinja2)
-├── 📄 main.py                  # Punto principal de la aplicación FastAPI
-├── 📄 requirements.txt         # Dependencias del proyecto
-├── 📄 .env                     # Variables de entorno (DB, JWT_SECRET)
-└── 📄 README.md                # Documentación principal del proyecto
+├── routers/
+│   ├── auth_router.py
+│   ├── spa_router.py
+│   ├── servicio_router.py
+│   ├── material_router.py
+│   ├── resena_router.py
+│   ├── usuario_router.py
+│   └── reporte_router.py
+│
+├── static/
+│   ├── css/
+│   ├── img/
+│   └── js/
+│
+├── templates/
+├── main.py
+├── requirements.txt
+├── .env
+└── README.md
 
-
-
-Despliegue
+☁️ Despliegue
                 ┌────────────────────────────────────────┐
                 │             CLIENTE (WEB)              │
-                │  Navegador: HTML, CSS, JS (Fetch API)  │
+                │      HTML, CSS, JS (Fetch API)         │
                 └────────────────────────────────────────┘
                                       │
-                              Peticiones HTTPS
+                                      ▼
+                           Peticiones HTTPS
                                       │
                                       ▼
               ┌──────────────────────────────────────────┐
               │               FASTAPI APP                │
               │                (main.py)                 │
               ├──────────────────────────────────────────┤
-              │ Routers:                                 │
-              │   - auth_router                          │
-              │   - spa_router                           │
-              │   - servicio_router                      │
-              │   - material_router                      │
-              │   - resena_router                        │
-              │   - reporte_router                       │
-              │   - usuario_router                       │
+              │ Routers: auth, spas, servicios, etc      │
               └──────────────────────────────────────────┘
                                       │
                                       ▼
               ┌──────────────────────────────────────────┐
               │                  CORE                    │
-              │  - db.py → conexión a base de datos      │
-              │  - auth.py → JWT, Hash, permisos         │
-              │  - utils.py                              │
+              │   db.py – conexión PostgreSQL            │
+              │   auth.py – JWT, Hash, roles             │
               └──────────────────────────────────────────┘
                                       │
                                       ▼
               ┌──────────────────────────────────────────┐
               │                BASE DE DATOS             │
-              │        SQLModel / SQLite / PostgreSQL    │
-              │    Tablas: Usuario, Spa, Servicio, etc.  │
+              │         PostgreSQL (Render.com)          │
               └──────────────────────────────────────────┘
 
-
-
-🛠️ Stack Tecnológico 
+🛠️ Stack Tecnológico
 🖥️ Backend
-    •	FastAPI — Framework principal para construir la API.
-    •	SQLModel + SQLAlchemy 2.0 — ORM y modelo de datos con tipado.
-    •	Pydantic v2 — Validación y serialización de datos.
-    •	Passlib + Bcrypt — Hashing seguro de contraseñas.
-    •	Python-JOSE (JWT) — Autenticación basada en tokens.
-    •	psycopg2 / psycopg — Conexión con PostgreSQL.
-    •	python-multipart — Manejo de formularios y subida de archivos.
+
+  FastAPI — Framework principal
+  
+  SQLModel + SQLAlchemy 2.0 — Modelado de datos
+  
+  Pydantic v2 — Validación
+  
+  Passlib + Bcrypt — Hashing de contraseñas
+  
+  Python-JOSE (JWT) — Autenticación
+  
+  psycopg / psycopg2-binary — Conexión PostgreSQL
+  
+  python-multipart — Subida de archivos
+
 🎨 Frontend
-    •	Jinja2 — Sistema de templates.
-    •	HTML + CSS + JS — Construcción de interfaces.
-🗄️ Base de Datos
-    •	PostgreSQL (Render) — Motor de base de datos en producción.
-☁️ Servicios / Despliegue
-    •	Render.com — Hosting del backend (FastAPI) + PostgreSQL.
-    •	.env + pydantic-settings — Gestión de configuración segura
 
+  Jinja2 — Templates
+  
+  HTML + CSS + JavaScript
+  
+  🗄️ Base de Datos
 
+PostgreSQL (Render) — Producción
+  
+  ☁️ Servicios / Despliegue
+  
+  Render.com — Hosting backend
+  
+  Render PostgreSQL — Base de datos
+  
+  .env + pydantic-settings — Configuración segura
