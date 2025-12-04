@@ -36,7 +36,6 @@ El proyecto integra datos recolectados desde redes sociales, directorios locales
 <img width="921" height="899" alt="image" src="https://github.com/user-attachments/assets/071b17aa-9cda-4cc6-a8e6-609ffd1fffc5" />
 
 🛣️ ENDPOINTS
-/spas
 POST    /spas/                     → Crear spa
 GET     /spas/                     → Listar spas
 GET     /spas/{spa_id}             → Obtener spa
@@ -45,6 +44,7 @@ DELETE  /spas/{spa_id}             → Desactivar spa
 GET     /spas/buscar/              → Buscar spa por filtros
 PATCH   /spas/{spa_id}/restore     → Restaurar spa
 POST    /spas/{spa_id}/imagenes    → Subir imagen de spa
+
 
 /materiales
 POST    /                         → Crear material
