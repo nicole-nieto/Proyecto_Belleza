@@ -1,4 +1,4 @@
-Beauty Nails — Plataforma Web de Spas de Uñas
+☻ Beauty Nails — Plataforma Web de Spas de Uñas
 
 FastAPI · SQLModel · PostgreSQL · Render · Python
 
@@ -19,6 +19,8 @@ Calidad y calificación
 El objetivo es facilitar el acceso a opciones de cuidado estético confiables, seguras y accesibles.
 El proyecto integra datos recolectados desde redes sociales, directorios locales y un dataset propio, con un backend robusto y un frontend simple y amigable.
 
+
+
 ✨ Características Principales
 
 🏠 Interfaz Web Moderna: HTML, CSS y templates Jinja2
@@ -31,11 +33,17 @@ El proyecto integra datos recolectados desde redes sociales, directorios locales
 
 🔐 Autenticación JWT: Roles: usuario, admin_spa, admin_principal
 
+
+
 📘 Diagrama de Clases
 
 <img width="921" height="899" alt="image" src="https://github.com/user-attachments/assets/071b17aa-9cda-4cc6-a8e6-609ffd1fffc5" />
 
+
+
 🛣️ ENDPOINTS
+
+
 POST    /spas/                     → Crear spa
 GET     /spas/                     → Listar spas
 GET     /spas/{spa_id}             → Obtener spa
@@ -87,6 +95,8 @@ GET     /todas_admin                       → Listar todas (admins)
 GET     /resenas_por_spa      → Total de reseñas por spa
 GET     /promedio_por_spa     → Promedio de calificaciones
 
+
+
 📁 Estructura del Proyecto
 PROYECTO_BELLEZA/
 ├── core/
@@ -119,6 +129,8 @@ PROYECTO_BELLEZA/
 ├── .env
 └── README.md
 
+
+
 ☁️ Despliegue
                 ┌────────────────────────────────────────┐
                 │             CLIENTE (WEB)              │
@@ -148,6 +160,9 @@ PROYECTO_BELLEZA/
               │                BASE DE DATOS             │
               │         PostgreSQL (Render.com)          │
               └──────────────────────────────────────────┘
+
+
+
 
 🛠️ Stack Tecnológico
 🖥️ Backend
